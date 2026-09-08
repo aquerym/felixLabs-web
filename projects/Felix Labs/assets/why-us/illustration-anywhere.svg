@@ -1,0 +1,17 @@
+<svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="36" y="38" width="148" height="96" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <rect x="48" y="50" width="48" height="10" rx="5" fill="rgba(255,255,255,0.08)"/>
+  <rect x="48" y="68" width="96" height="5" rx="2.5" fill="rgba(255,255,255,0.12)"/>
+  <rect x="48" y="80" width="72" height="5" rx="2.5" fill="rgba(255,255,255,0.08)"/>
+  <rect x="48" y="96" width="112" height="22" rx="8" fill="rgba(104,131,217,0.16)" stroke="rgba(104,131,217,0.38)" stroke-width="1"/>
+  <rect x="58" y="104" width="56" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+  <rect x="170" y="54" width="74" height="128" rx="16" fill="rgba(8,10,20,0.55)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <rect x="182" y="66" width="50" height="8" rx="4" fill="rgba(255,255,255,0.12)"/>
+  <rect x="182" y="82" width="50" height="36" rx="8" fill="rgba(104,131,217,0.14)" stroke="rgba(104,131,217,0.35)" stroke-width="1"/>
+  <rect x="190" y="92" width="34" height="3" rx="1.5" fill="rgba(255,255,255,0.28)"/>
+  <rect x="190" y="100" width="26" height="3" rx="1.5" fill="rgba(255,255,255,0.16)"/>
+  <circle cx="207" cy="156" r="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <path d="M128 86c18-6 34-6 52 0" stroke="rgba(104,131,217,0.35)" stroke-width="1" stroke-dasharray="4 5"/>
+  <circle cx="152" cy="86" r="12" fill="rgba(104,131,217,0.12)" stroke="rgba(104,131,217,0.45)" stroke-width="1"/>
+  <path d="M148 86h8M152 82v8" stroke="rgba(255,255,255,0.55)" stroke-width="1" stroke-linecap="round"/>
+</svg>

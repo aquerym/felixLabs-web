@@ -1,0 +1,7 @@
+{
+  "name": "felix-labs-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes serve \"projects/Felix Labs\" -l 8080"
+  }
+}

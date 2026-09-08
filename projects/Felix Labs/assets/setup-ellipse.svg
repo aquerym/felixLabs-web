@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1442" height="441" viewBox="0 0 1442 441" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1441 440C1441 382.35 1422.38 325.264 1386.19 272.002C1350.01 218.74 1296.98 170.345 1230.12 129.58C1163.26 88.8152 1083.89 56.4787 996.532 34.4169C909.178 12.3551 815.552 0.999997 721 1C626.448 1 532.822 12.3551 445.468 34.4169C358.113 56.4787 278.741 88.8152 211.883 129.58C145.025 170.345 91.9901 218.74 55.8067 272.002C19.6233 325.264 0.999992 382.35 1 440V441H1441V440Z" fill="#010204"/>
+<path d="M1441 440C1441 382.35 1422.38 325.264 1386.19 272.002C1350.01 218.74 1296.98 170.345 1230.12 129.58C1163.26 88.8152 1083.89 56.4787 996.532 34.4169C909.178 12.3551 815.552 0.999997 721 1C626.448 1 532.822 12.3551 445.468 34.4169C358.113 56.4787 278.741 88.8152 211.883 129.58C145.025 170.345 91.9901 218.74 55.8067 272.002C19.6233 325.264 0.999992 382.35 1 440" stroke="url(#paint0_linear_0_4)" stroke-width="2" fill="none" clip-path="url(#glow-arc)"/>
+<defs>
+<clipPath id="glow-arc">
+<rect x="0" y="0" width="1442" height="300"/>
+</clipPath>
+<linearGradient id="paint0_linear_0_4" x1="1254" y1="140" x2="196.992" y2="143.953" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0"/>
+<stop offset="0.399875" stop-color="white" stop-opacity="0.2"/>
+<stop offset="0.496534" stop-color="white"/>
+<stop offset="0.604625" stop-color="white" stop-opacity="0.4"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>

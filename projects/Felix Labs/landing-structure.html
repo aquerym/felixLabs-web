@@ -1,0 +1,3781 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  Felix Labs landing — semantic rebuild of the Figma/Anima dump.
+  Tokens from Color Variables + get_design_context; canvas fill #010204 from the export frames.
+  Dropped: Inter/Syne/divriots, Frame_* ids, placehold.co, 1440px absolute artboard, text-transform: capitalize.
+-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Felix Labs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Montserrat:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-canvas: #010204; /* fill of Website frames in the dump */
+      --color-bg: #080f18; /* token dark/300 */
+      --color-text: #ffffff;
+      --color-text-secondary: #ffffffe5;
+      --color-muted: rgba(253, 253, 253, 0.9);
+      --color-faint: rgba(255, 255, 255, 0.7);
+      --color-accent: #4b54db;
+      --color-accent-light: #a4aaff;
+      --color-surface: rgba(255, 255, 255, 0.04);
+      --color-card-glass: #0000004d;
+      --color-card-glass-mid: #00000026;
+      --color-heading-mid: #6883d9;
+      --color-on-white: #3c4886;
+      --space-xs: 4px;
+      --space-s: 8px;
+      --space-p: 12px;
+      --space-m: 16px;
+      --space-l: 24px;
+      --space-xl: 32px;
+      --space-2xl: 40px;
+      --space-3xl: 64px;
+      --radius-md: 16px;
+      --radius-card: 28px;
+      --radius-pill: 60px;
+      --ease: cubic-bezier(0.2, 0, 0, 1);
+      --focus: 2px solid #a4aaff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    /* Large screens: scale the 1440 composition (type, cards, media), don't stretch columns. */
+    @media (min-width: 1441px) {
+      html { zoom: min(1.08, calc(100vw / 1440px)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+    body {
+      margin: 0;
+      font-family: Montserrat, system-ui, sans-serif;
+      background: var(--color-canvas);
+      color: var(--color-muted);
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; transition: color 160ms var(--ease), opacity 160ms var(--ease), background 160ms var(--ease), filter 160ms var(--ease); }
+    button, input, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    h1, h2, h3, h4 { color: var(--color-text); font-weight: 500; margin: 0; }
+    p { margin: 0; }
+    ul, ol { margin: 0; padding: 0; list-style: none; }
+    :focus-visible { outline: var(--focus); outline-offset: 3px; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    .wrap { width: min(1268px, calc(100% - 48px)); margin-inline: auto; }
+    .band { padding-block: var(--space-3xl); }
+    .intro { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-m); margin-bottom: var(--space-xl); }
+    .intro-left { align-items: flex-start; text-align: start; }
+
+    .heading-grad {
+      background: linear-gradient(to top, #fff 30%, var(--color-heading-mid));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    h2 { font-size: clamp(24px, 3vw, 32px); max-width: 680px; line-height: 1.2; }
+    h3 { font-size: 24px; }
+    .lede { font-size: 16px; line-height: 25px; color: var(--color-muted); max-width: 520px; }
+
+    .eyebrow {
+      position: relative;
+      display: inline-flex; align-items: center;
+      padding: 7px 14px; border-radius: 34px;
+      background: var(--color-surface);
+      font-size: 14px; font-weight: 500; color: var(--color-text); line-height: 14px;
+    }
+    .eyebrow::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      box-shadow: inset -4.5px 2.3px 6.4px 1.7px rgba(255, 255, 255, 0.16);
+    }
+    .eyebrow-accent {
+      background: linear-gradient(76.5deg, rgba(75, 84, 219, 0.8), rgba(117, 125, 248, 0.8));
+      box-shadow: 0 4px 26px 7px rgba(148, 139, 255, 0.28);
+    }
+
+    .cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 12px 24px; border-radius: var(--radius-pill);
+      font-size: 16px; font-weight: 500; color: var(--color-text); border: 0;
+      cursor: pointer;
+      transition: scale 160ms var(--ease), filter 160ms var(--ease), background 160ms var(--ease), color 160ms var(--ease), box-shadow 160ms var(--ease), outline-color 160ms var(--ease);
+    }
+    .cta:active { scale: 0.96; }
+    .cta-label { position: relative; z-index: 4; }
+    .cta-primary {
+      position: relative;
+      isolation: isolate;
+      color: #fff;
+      background: linear-gradient(-3.4deg, rgba(75, 84, 219, 0.8) 10%, rgba(117, 125, 248, 0.8) 85%);
+      box-shadow:
+        inset 2px 4px 16px rgba(255, 255, 255, 0.14),
+        0 8px 24px rgba(75, 84, 219, 0.28);
+      -webkit-backdrop-filter: blur(50px);
+      backdrop-filter: blur(50px);
+    }
+    .cta-glass {
+      position: absolute; inset: 0; z-index: 1;
+      border-radius: inherit; overflow: hidden; pointer-events: none;
+    }
+    .cta-primary::after {
+      content: "";
+      position: absolute; inset: 0; z-index: 2;
+      border-radius: inherit; pointer-events: none;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      opacity: 0.55;
+      -webkit-mask-image: linear-gradient(170deg, #000, transparent 50%);
+      mask-image: linear-gradient(170deg, #000, transparent 50%);
+    }
+    .cta-orb {
+      position: absolute;
+      top: calc(50% - 100px); left: calc(50% - 100px);
+      width: 200px; height: 200px;
+    }
+    .cta-orb::before,
+    .cta-orb::after {
+      content: ""; position: absolute; inset: 0; border-radius: 50%;
+    }
+    .cta-orb::before {
+      background: conic-gradient(from 180deg, transparent 200deg, rgba(255, 255, 255, 0.7) 320deg, transparent 360deg);
+      filter: blur(12px);
+      mix-blend-mode: screen;
+      animation: cta-orb-spin 3.6s linear infinite;
+      transition: opacity 500ms var(--ease);
+    }
+    .cta-orb::after {
+      inset: 30px;
+      background: rgba(255, 255, 255, 0.28);
+      opacity: 0;
+      filter: blur(5px);
+      mix-blend-mode: screen;
+      transform: scale(0.5);
+      transition: opacity 500ms var(--ease), transform 700ms var(--ease);
+      -webkit-mask-image: radial-gradient(50% 50%, #000, transparent);
+      mask-image: radial-gradient(50% 50%, #000, transparent);
+    }
+    .cta-primary:focus-visible .cta-orb::before { opacity: 0; }
+    .cta-primary:focus-visible .cta-orb::after { opacity: 1; transform: scale(1); }
+    @keyframes cta-orb-spin {
+      0% { transform: translate(0) rotate(0deg); }
+      25% { transform: translateX(-30px) rotate(90deg); }
+      50% { transform: translate(0) rotate(180deg); }
+      75% { transform: translateX(30px) rotate(270deg); }
+      100% { transform: translate(0) rotate(360deg); }
+    }
+    .cta-ghost {
+      position: relative;
+      background: var(--color-surface);
+      backdrop-filter: blur(6px);
+    }
+    .cta-ghost::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      box-shadow: inset -8px 4px 11px 3px rgba(255, 255, 255, 0.16);
+    }
+    .cta-secondary {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: var(--color-surface);
+      outline: 1px solid rgba(255, 255, 255, 0.2);
+      outline-offset: 0;
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      transition: scale 200ms var(--ease), filter 200ms var(--ease), background 420ms cubic-bezier(0.22, 1, 0.36, 1), color 360ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1), outline-color 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .cta-secondary::before {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      z-index: 0;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.82);
+      transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1), opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+    .cta-secondary .cta-label { position: relative; z-index: 1; }
+    .cta-secondary:focus-visible {
+      color: var(--color-on-white);
+      outline-color: #fff;
+      box-shadow: 0 0 22px rgba(255, 255, 255, 0.3);
+    }
+    .cta-secondary:focus-visible::before {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .cta-inverse {
+      background: #fff; color: var(--color-on-white); font-weight: 600;
+    }
+
+    .stroke {
+      position: relative;
+    }
+    .stroke::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      padding: 2px;
+      background: linear-gradient(118deg, rgba(196, 196, 196, 0.04) 46%, rgba(235, 237, 255, 0.28) 53%, rgba(217, 217, 217, 0.04) 66%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+    }
+
+    .media {
+      object-fit: cover; width: 100%; height: 100%;
+    }
+
+    section[id] { scroll-margin-top: 88px; }
+
+    /* Header — full width at top, grid-width pill when scrolled */
+    .site-header {
+      position: relative; z-index: 100; flex-shrink: 0;
+      width: 100%; padding: var(--space-m) 0;
+      background: transparent;
+      transition: padding 320ms var(--ease);
+    }
+    .site-header.is-scrolled {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: max(var(--space-s), env(safe-area-inset-top)) 0 var(--space-s);
+    }
+    .site-header-pad {
+      flex-shrink: 0; height: 0;
+      transition: height 320ms var(--ease);
+    }
+    .site-header-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--space-m);
+      width: 100%; margin-inline: auto;
+      padding-inline: var(--space-2xl);
+      border: 1px solid transparent; border-radius: 0;
+      background: transparent; box-shadow: none;
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      transition:
+        width 320ms var(--ease), padding 320ms var(--ease),
+        border-radius 320ms var(--ease), background 320ms var(--ease),
+        border-color 320ms var(--ease), box-shadow 320ms var(--ease),
+        backdrop-filter 320ms var(--ease);
+    }
+    .site-header.is-scrolled .site-header-bar {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      width: min(1268px, calc(100% - 48px));
+      padding: 6px 12px 6px 16px;
+      border-radius: 999px;
+      border-color: transparent;
+      background: linear-gradient(90deg, #ffffff05 5.287%, var(--color-card-glass) 90.312%);
+      backdrop-filter: blur(54px); -webkit-backdrop-filter: blur(54px);
+      box-shadow: none;
+    }
+    .site-header.is-scrolled .site-header-bar::after {
+      content: "";
+      position: absolute; inset: 0; z-index: 3;
+      border-radius: inherit; pointer-events: none;
+      padding: 1px;
+      background: linear-gradient(118deg, rgba(196, 196, 196, 0.04) 46%, rgba(235, 237, 255, 0.28) 53%, rgba(217, 217, 217, 0.04) 66%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+    }
+    .site-header.is-scrolled .site-header-bar > *,
+    .site-header.is-scrolled .site-header-bar .main-nav > ul,
+    .site-header.is-scrolled .site-header-bar .nav-extra {
+      position: relative; z-index: 2;
+    }
+    .logo { width: 176px; height: 33px; flex-shrink: 0; overflow: clip; transition: width 320ms var(--ease), height 320ms var(--ease); }
+    .logo img { width: 176px; height: 33px; transition: width 320ms var(--ease), height 320ms var(--ease); }
+    .site-header.is-scrolled .logo { width: 140px; height: 26px; }
+    .site-header.is-scrolled .logo img { width: 140px; height: 26px; }
+    .main-nav > ul {
+      display: flex; gap: 8px; padding: 3px; border-radius: 34px;
+      background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5.8px);
+    }
+    .main-nav > ul a {
+      position: relative;
+      display: inline-block; padding: 6px 18px; border-radius: 34px;
+      font-size: 14px; font-weight: 500; color: #fff; line-height: 20px;
+      transition: background 160ms var(--ease);
+    }
+    .main-nav > ul a.is-active {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5.8px);
+    }
+    .main-nav > ul a.is-active::after {
+      content: "";
+      position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      padding: 1px;
+      background: linear-gradient(270deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 51%, rgba(255, 255, 255, 0.09) 100%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+    }
+    .header-actions { display: none; align-items: center; gap: var(--space-m); }
+    .main-nav { display: contents; }
+    .nav-extra { display: flex; align-items: center; gap: 10px; }
+    .nav-extra .cta { min-height: 38px; padding: 8px 18px; font-size: 14px; }
+    .nav-glows { display: none; }
+    .nav-toggle {
+      display: none;
+      flex-shrink: 0; align-items: center; justify-content: center;
+      width: 44px; height: 44px; padding: 0; border: 0; border-radius: 0;
+      background: transparent; color: #fff;
+      appearance: none; -webkit-appearance: none;
+      transition: opacity 160ms var(--ease);
+    }
+    .nav-toggle:focus,
+    .nav-toggle:focus-visible { outline: none; }
+    .nav-toggle-bars,
+    .nav-toggle-bars::before,
+    .nav-toggle-bars::after {
+      display: block; width: 18px; height: 1.5px; border-radius: 1px; background: currentColor;
+    }
+    .nav-toggle-bars { position: relative; }
+    .nav-toggle-bars::before,
+    .nav-toggle-bars::after {
+      content: ""; position: absolute; inset-inline-start: 0;
+      transition: transform 160ms var(--ease), top 160ms var(--ease);
+    }
+    .nav-toggle-bars::before { top: -6px; }
+    .nav-toggle-bars::after { top: 6px; }
+    .site-header.is-nav-open .nav-toggle-bars { background: transparent; }
+    .site-header.is-nav-open .nav-toggle-bars::before { top: 0; transform: rotate(45deg); }
+    .site-header.is-nav-open .nav-toggle-bars::after { top: 0; transform: rotate(-45deg); }
+    html[lang="he"] body { font-family: Heebo, Montserrat, system-ui, sans-serif; }
+    .lang {
+      position: relative;
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+      flex-shrink: 0;
+      height: 38px;
+      padding: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 19px;
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      isolation: isolate;
+      user-select: none;
+      direction: ltr;
+    }
+    .lang-slider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      z-index: 0;
+      width: calc((100% - 6px) / 2);
+      height: calc(100% - 6px);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.25), 0 0 4px rgba(255, 255, 255, 0.4);
+      transform: translateX(0);
+      pointer-events: none;
+    }
+    .lang.is-ready .lang-slider {
+      transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lang[data-lang="he"] .lang-slider { transform: translateX(100%); }
+    .lang-btn {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      min-width: max-content;
+      padding: 0 12px;
+      white-space: nowrap;
+      border: 0;
+      border-radius: 16px;
+      background: transparent;
+      color: var(--color-faint);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 1;
+      text-box: trim-both cap alphabetic;
+      transition: color 280ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lang-btn[data-lang="en"] {
+      font-family: Montserrat, system-ui, sans-serif;
+      padding: 1px 12px 0;
+    }
+    .lang-btn[data-lang="he"] {
+      font-family: Heebo, Montserrat, system-ui, sans-serif;
+      padding: 0 12px;
+    }
+    .lang-btn[aria-checked="true"] {
+      color: #000;
+    }
+
+    /* Hero stage */
+    .hero-stage {
+      position: relative; overflow: hidden;
+      height: auto; max-height: 1120px;
+      display: flex; flex-direction: column;
+    }
+    .hero-stage canvas.stars {
+      position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.85; z-index: 0;
+    }
+    /* Figma Website frame 1440×1024 — Ellipse 109 / 110 / 111 */
+    .hero-glows {
+      position: absolute; top: 0; left: 50%; z-index: 1;
+      width: 1440px; height: 1024px;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .glow {
+      position: absolute; border-radius: 50%;
+      filter: blur(154.45px);
+    }
+    .glow-a {
+      width: 1267px; height: 787px; left: 81px; top: 257px;
+      background: radial-gradient(54.42% 141.05% at 50% 50%, rgba(122, 102, 240, 0.6) 0%, rgba(52, 69, 152, 0.6) 100%);
+    }
+    .glow-b {
+      width: 611px; height: 508px; left: 409px; top: -76px;
+      background: rgba(116, 135, 227, 0.3);
+    }
+    .glow-c {
+      width: 520px; height: 630px; left: calc(50% - 520px / 2); top: 324px;
+      background: rgba(194, 255, 250, 0.2);
+    }
+    .hero {
+      position: relative; z-index: 2; flex-shrink: 0;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: var(--space-m); padding: 72px 24px 0;
+    }
+    .hero h1 {
+      max-width: 1002px; font-size: clamp(28px, 4.2vw, 48px); font-weight: 500;
+      background: linear-gradient(to top, #fff 31%, #6883d9); -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero-sub { max-width: 581px; font-size: 16px; line-height: 25px; }
+    .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-m); }
+    @property --hero-stroke-angle {
+      syntax: "<angle>";
+      inherits: true;
+      initial-value: 270deg;
+    }
+    .hero-shot {
+      --hero-r: calc(min(1060px, 92vw) * 32 / 1060);
+      position: relative; z-index: 2; flex-shrink: 0;
+      width: min(1060px, 92vw); margin: 40px auto 0;
+      border-radius: var(--hero-r); overflow: hidden; aspect-ratio: 1060 / 752;
+      box-shadow: 0 -5px 22px 17px rgba(97, 104, 146, 0.2), 0 15px 10px 10px rgba(53, 66, 101, 0.2);
+      animation: hero-stroke-travel 20s linear infinite;
+    }
+    .hero-shot .media { object-position: top center; }
+    .hero-shot .hero-shot-media { display: block; background: #0b0f1a; }
+    .hero-shot.stroke::after {
+      z-index: 1; padding: 2px; border-radius: inherit;
+      background: linear-gradient(var(--hero-stroke-angle), rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.2) 40.5%, #fff 52.9%, rgba(255, 255, 255, 0.4) 62.6%, rgba(255, 255, 255, 0.1) 100%);
+    }
+    @keyframes hero-stroke-travel {
+      to { --hero-stroke-angle: 630deg; }
+    }
+    .hero-fade {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; pointer-events: none;
+      height: calc(min(1060px, 92vw) * 165 / 1060);
+      background: linear-gradient(180deg, rgba(1, 2, 4, 0), var(--color-canvas));
+    }
+    .hero-stage .site-header,
+    .hero-stage .hero > *,
+    .hero-stage .hero-shot {
+      opacity: 0;
+      transition: opacity 500ms var(--ease), transform 500ms var(--ease);
+    }
+    .hero-stage .hero > * { transform: translateY(12px); }
+    .hero-stage .hero-shot { transform: translateY(16px) scale(0.97); }
+    .hero-stage .site-header { transition-delay: 0ms; }
+    .hero-stage .hero > *:nth-child(1) { transition-delay: 50ms; }
+    .hero-stage .hero > *:nth-child(2) { transition-delay: 100ms; }
+    .hero-stage .hero > *:nth-child(3) { transition-delay: 150ms; }
+    .hero-stage .hero > *:nth-child(4) { transition-delay: 200ms; }
+    .hero-stage .hero-shot { transition-delay: 280ms; }
+    .hero-stage.is-inview .site-header,
+    .hero-stage.is-inview .hero > *,
+    .hero-stage.is-inview .hero-shot {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-stage .site-header,
+      .hero-stage .hero > *,
+      .hero-stage .hero-shot {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* Stats — Figma 3886:8453, sized for real viewports not the 1440 artboard */
+    .stats {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.25fr);
+      align-items: center;
+      gap: clamp(24px, 4vw, 48px);
+    }
+    .stats-intro {
+      display: flex; flex-direction: column; gap: var(--space-m); min-width: 0;
+    }
+    .stats-heading {
+      max-width: none;
+      font-size: clamp(22px, 1.55vw + 10px, 32px);
+      font-weight: 500; line-height: 1.25;
+      background: radial-gradient(120% 220% at 50% 190%, #fff 53.393%, #d9e0f5 65.045%, #b4c1ec 76.696%, #8ea2e2 88.348%, #6883d9 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .stats-intro .lede { max-width: 28em; }
+    .stats-numbers {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: var(--space-xl); width: max-content; max-width: 100%;
+      margin-inline-start: auto; text-align: center; color: #fff;
+    }
+    .stat {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; padding: var(--space-s) var(--space-m); border-radius: 30px; min-width: 0;
+    }
+    .stat-value { font-size: clamp(32px, 3vw, 52px); font-weight: 500; color: #fff; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .stat-label { font-size: clamp(13px, 1vw, 16px); font-weight: 500; color: #fff; line-height: 1.3; }
+
+    /* Benefits intro — Figma 3906:207 */
+    .benefits .intro { gap: var(--space-m); margin-bottom: 10px; }
+    .benefits .intro h2 {
+      width: 680px; max-width: 100%; font-size: 32px; line-height: normal; font-weight: 500;
+      background: linear-gradient(to top, #fff 29.327%, #6883d9);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .benefits .intro .lede { max-width: 408px; }
+    .benefits .intro > *,
+    .benefits .benefit-grid > .card,
+    .benefits > .pc {
+      opacity: 0;
+      transition: opacity 500ms var(--ease), transform 500ms var(--ease);
+    }
+    .benefits .intro > * { transform: translateY(12px); }
+    .benefits .benefit-grid > .card,
+    .benefits > .pc { transform: translateY(16px) scale(0.97); }
+    .benefits .intro > *:nth-child(1) { transition-delay: 0ms; }
+    .benefits .intro > *:nth-child(2) { transition-delay: 50ms; }
+    .benefits .intro > *:nth-child(3) { transition-delay: 100ms; }
+    .benefits .benefit-grid > .card:nth-child(1) { transition-delay: 160ms; }
+    .benefits .benefit-grid > .card:nth-child(2) { transition-delay: 220ms; }
+    .benefits > .pc { transition-delay: 280ms; }
+    .benefits.is-inview .intro > *,
+    .benefits.is-inview .benefit-grid > .card,
+    .benefits.is-inview > .pc {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .benefits .intro > *,
+      .benefits .benefit-grid > .card,
+      .benefits > .pc,
+      .bento-int-node {
+        opacity: 1;
+        transform: none;
+      }
+      .bento-chats-row {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* Cards — Figma 3906:217 bento */
+    .benefit-grid {
+      display: grid; grid-template-columns: 450px 1fr; grid-template-rows: minmax(0, 1fr) auto;
+      height: 440px;
+      column-gap: var(--space-m); row-gap: 0;
+      align-items: stretch;
+    }
+    .card {
+      min-height: 0; height: auto; border-radius: var(--radius-card);
+      overflow: hidden; display: grid; grid-template-rows: subgrid; grid-row: span 2;
+      background: linear-gradient(90deg, #ffffff05 5.287%, #0000004d 90.312%);
+      backdrop-filter: blur(54px);
+      -webkit-backdrop-filter: blur(54px);
+    }
+    .card-wide { border-radius: 32px; }
+    .card-copy,
+    .pc-copy {
+      padding: 24px 28px;
+    }
+    .card-copy {
+      display: flex; flex-direction: column; gap: var(--space-s); text-align: start;
+    }
+    .card-copy h3 { font-size: 26px; }
+    .card-copy p,
+    .pc-copy p {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 25px;
+      color: #fff;
+      text-wrap: pretty;
+    }
+    .card .card-media {
+      position: relative; min-height: 0; height: 100%;
+      overflow: hidden; background: transparent;
+    }
+    .card .card-media .media {
+      position: absolute; max-width: none;
+    }
+    .card:not(.card-wide) .card-media .media {
+      z-index: 1;
+      width: 122.49%; height: 115.49%; left: -11.24%; top: -9.33%;
+    }
+    .card-wide .card-media .media {
+      z-index: 1;
+      inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* Integrations bento — Figma dump recoded, artboard 620.2×402 */
+    .bento-int {
+      overflow: hidden;
+      background: transparent;
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 44%, transparent 96%);
+      mask-image: linear-gradient(180deg, #000 0%, #000 44%, transparent 96%);
+    }
+    .bento-int::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 0%, transparent 38%, var(--color-card-glass-mid) 72%, var(--color-card-glass) 100%);
+    }
+    .bento-int-disc,
+    .bento-int-beam {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bento-int-disc {
+      left: 50%;
+      width: 91.99%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(115, 115, 115, 0.05) 0%, rgba(217, 217, 217, 0.05) 100%);
+      transform: translateX(-50%);
+    }
+    .bento-int-disc-a { top: -92.44%; }
+    .bento-int-disc-b { top: 49.93%; }
+    .bento-int-beam {
+      border-radius: 50%;
+      transform-origin: 0 0;
+      transform: rotate(41.2deg);
+    }
+    .bento-int-beam-a {
+      left: 80.89%; top: -69.58%; width: 7.9%; height: 195.62%;
+      background: linear-gradient(180deg, rgba(186, 192, 255, 0.54) 0%, rgba(186, 192, 255, 0.09) 100%);
+      filter: blur(43px);
+    }
+    .bento-int-beam-b {
+      left: 98.66%; top: -22.44%; width: 7.34%; height: 90.8%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.07) 100%);
+      filter: blur(36px);
+    }
+    .bento-int-orbits {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .bento-int-orbits .orbit-base {
+      fill: none;
+      stroke: rgba(186, 192, 255, 0.18);
+      stroke-width: 1;
+    }
+    .bento-int-orbits .orbit-shine {
+      fill: none;
+      stroke-width: 1.75;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bento-int-orbits .orbit-shine { display: none; }
+    }
+    .bento-int-node {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--s);
+      aspect-ratio: 1;
+      z-index: 4;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      overflow: hidden;
+      isolation: isolate;
+      background: #0b0f1b;
+      box-shadow: inset 0 5px 6px rgba(189, 189, 189, 0.1);
+      opacity: 0;
+      transform: translateY(8px) scale(0.97);
+      transition: opacity 500ms var(--ease) var(--in-delay, 0ms), transform 500ms var(--ease) var(--in-delay, 0ms);
+    }
+    .benefits.is-inview .bento-int-node {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      animation: bento-int-pulse 6s cubic-bezier(0.77, 0, 0.175, 1) calc(0.9s + var(--pulse-delay, 0s)) infinite;
+    }
+    .bento-int-bob {
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(189, 189, 189, 0.12) 0%, #0b0f1b 48%);
+    }
+    @keyframes bento-int-pulse {
+      0%, 15%, 100% { transform: scale(1); }
+      7.5% { transform: scale(1.08); }
+    }
+    .bento-int-node img,
+    .bento-int-node svg {
+      width: 52%;
+      height: 52%;
+      max-width: none;
+      object-fit: contain;
+    }
+    .bento-int-hub img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .bento-int-ig { --x: 14.04%; --y: 18.68%; --s: 10.8%; --pulse-delay: 0s; --in-delay: 220ms; }
+    .bento-int-gmail { --x: 76.77%; --y: 18.43%; --s: 10.64%; --pulse-delay: 1s; --in-delay: 260ms; }
+    .bento-int-browser { --x: 70.16%; --y: calc(54.5% - 25px); --s: 10.8%; --pulse-delay: 2s; --in-delay: 340ms; }
+    .bento-int-wa { --x: 44.68%; --y: 75.15%; --s: 10.64%; --pulse-delay: 3s; --in-delay: 380ms; }
+    .bento-int-fb { --x: 20.49%; --y: calc(54.5% - 25px); --s: 10.8%; --pulse-delay: 4s; --in-delay: 300ms; }
+    .bento-int-hub { z-index: 5; --x: 42.29%; --y: 38.09%; --s: 15.43%; --pulse-delay: 5s; --in-delay: 180ms; }
+
+    /* Chats bento — Figma dump recoded, artboard 752×344 */
+    .bento-chats {
+      overflow: hidden;
+      background: transparent;
+      height: 100%;
+    }
+    .bento-chats-stars {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.4;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle, #9ab2ff 1px, transparent 1px),
+        radial-gradient(circle, rgba(154, 178, 255, 0.35) 1px, transparent 1px);
+      background-size: 118px 94px, 86px 72px;
+      background-position: 12% 8%, 68% 22%;
+    }
+    .bento-chats-kb {
+      position: absolute;
+      left: -11.97%;
+      top: 35.06%;
+      width: 51.37%;
+      height: 58.49%;
+      z-index: 1;
+      border: 0.5px solid rgba(164, 164, 164, 0.33);
+      border-radius: 0.475rem;
+      background: rgba(8, 15, 24, 0.8);
+      opacity: 0;
+      transform: translateX(-16px) scale(0.96);
+      transition: opacity 450ms var(--ease), transform 550ms var(--ease);
+      pointer-events: none;
+    }
+    .bento-chats.is-kb-open .bento-chats-kb {
+      opacity: 1;
+      transform: none;
+    }
+    .bento-chats-kb-grid {
+      position: absolute;
+      left: 5.7%;
+      right: 5.7%;
+      top: 16.2%;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .bento-chats-kb-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .bento-chats-kb-pill {
+      height: 14px;
+      border-radius: 1.275rem;
+      background: linear-gradient(180deg, #212c3b 0%, #08101a 100%);
+      flex-shrink: 0;
+    }
+    .bento-chats-kb-select {
+      position: absolute;
+      left: 0;
+      top: 11.1%;
+      width: 95.8%;
+      height: 64.7%;
+      border: 1px solid #f5f5f5;
+      background: rgba(115, 115, 115, 0.28);
+      pointer-events: none;
+    }
+    .bento-chats-kb-dot {
+      position: absolute;
+      width: 1.06%;
+      height: 1.9%;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .bento-chats-kb-dot-a { left: 95.1%; top: 10.1%; }
+    .bento-chats-kb-dot-b { left: 95.1%; top: 74.9%; }
+    .bento-chats-cursor {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 5;
+      width: 19px;
+      pointer-events: none;
+      opacity: 0;
+      will-change: transform;
+      filter: drop-shadow(-2px -3.3px 12.6px rgba(66, 235, 196, 0.48)) drop-shadow(2px 3.3px 12.6px rgba(66, 235, 196, 0.33));
+    }
+    .bento-chats.is-demo-running .bento-chats-cursor {
+      opacity: 1;
+    }
+    .bento-chats-list {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      -webkit-mask-image: linear-gradient(180deg, #000 48%, transparent 100%);
+      mask-image: linear-gradient(180deg, #000 48%, transparent 100%);
+    }
+    .bento-chats-row {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: max-content;
+      max-width: 72%;
+      padding: 10px 14px;
+      border-radius: 2.5rem;
+      background: rgba(200, 200, 200, 0.05);
+      overflow: hidden;
+      isolation: isolate;
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 500ms var(--ease) var(--in-delay, 0ms), transform 500ms var(--ease) var(--in-delay, 0ms);
+    }
+    .bento-chats-row > * {
+      position: relative;
+      z-index: 1;
+    }
+    .bento-chats-row::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      padding: 0 0 1px;
+      background: linear-gradient(90deg, rgba(96, 96, 96, 0.06) 0%, rgba(255, 255, 255, 0.02) 53.8%, rgba(96, 96, 96, 0.06) 100%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+    }
+    .benefits.is-inview .bento-chats-row {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .bento-chats-row-active,
+    .bento-chats-row.is-selected {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 42%, rgba(0, 0, 0, 0.1) 90.3%);
+    }
+    .bento-chats-row-active::before,
+    .bento-chats-row.is-selected::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      left: 78%;
+      top: calc(50% - 6px);
+      width: 58%;
+      max-width: 208px;
+      height: 53px;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background: var(--color-on-white);
+      filter: blur(26px);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+    .bento-chats-avatar-wrap {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      isolation: isolate;
+      transform: translateZ(0);
+      clip-path: circle(50%);
+      background: #1a2130;
+    }
+    .bento-chats-avatar {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 50%;
+    }
+    .bento-chats-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .bento-chats-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bento-chats-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .bento-chats-badge {
+      padding: 4px 8px;
+      border: 0.5px solid rgba(74, 255, 190, 0.3);
+      border-radius: 2.375rem;
+      background: rgba(74, 255, 190, 0.15);
+      font-size: 12px;
+      font-weight: 500;
+      color: #4affbe;
+      text-transform: capitalize;
+      text-shadow: 0 0 3px rgba(153, 255, 206, 0.57);
+      white-space: nowrap;
+    }
+    .bento-chats-preview {
+      margin: 0;
+      max-width: 210px;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bento-chats-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      align-self: stretch;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+    .bento-chats-time {
+      margin-bottom: auto;
+      font-size: 10px;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.9);
+      white-space: nowrap;
+    }
+    .bento-chats-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-width: 15px;
+      height: 15px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: var(--color-accent);
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1;
+      color: #fff;
+      letter-spacing: -0.05em;
+    }
+    .bento-chats-count[data-count="4"] {
+      letter-spacing: -0.08em;
+    }
+    .bento-chats-row.is-hovered {
+      background: rgba(200, 200, 200, 0.09);
+    }
+    .bento-chats-row.is-selected .bento-chats-preview {
+      animation: bento-chats-typing 1.2s ease-in-out infinite;
+    }
+    @keyframes bento-chats-typing {
+      0%, 100% { opacity: 0.45; }
+      50% { opacity: 1; }
+    }
+    .bento-chats-fade {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 48%;
+      height: 52%;
+      z-index: 4;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 0%, var(--color-card-glass-mid) 45%, var(--color-card-glass) 100%);
+    }
+    .bento-chats-row-1 { --x: 37.5%; --y: 1%; --in-delay: 200ms; }
+    .bento-chats-row-2 { --x: 42.82%; --y: 24%; --in-delay: 260ms; }
+    .bento-chats-row-3 { --x: 50.8%; --y: 47%; --in-delay: 320ms; }
+    .bento-chats-row-4 { --x: 58.78%; --y: 70%; --in-delay: 380ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .bento-chats-row,
+      .bento-chats-row.is-selected .bento-chats-preview {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+      .bento-chats-kb {
+        opacity: 1;
+        transform: none;
+      }
+      .bento-chats.is-demo-running .bento-chats-cursor {
+        opacity: 1;
+      }
+    }
+    .pc {
+      position: relative; display: grid; grid-template-columns: 450px minmax(0, 1fr); gap: var(--space-s);
+      height: 448px; border-radius: 32px; overflow: hidden;
+      background: linear-gradient(90deg, #ffffff05 5.287%, #0000004d 90.312%);
+      backdrop-filter: blur(54px);
+      -webkit-backdrop-filter: blur(54px);
+      margin-top: var(--space-m);
+    }
+    .pc-copy {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+      gap: var(--space-l); width: 450px;
+    }
+    .pc-copy > div {
+      display: flex; flex-direction: column; gap: var(--space-s); width: 100%;
+    }
+    .pc-copy h3 { font-size: 26px; white-space: nowrap; }
+    .pc .card-media {
+      position: relative; z-index: 2; height: 448px; min-height: 0; overflow: visible; background: transparent;
+    }
+    .pc-shot {
+      position: absolute; top: 28px; right: -108px; left: auto; height: 448px; width: 808px; overflow: hidden;
+      container-type: inline-size;
+    }
+    .pc-shot .media {
+      position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: contain;
+    }
+
+    /* Multilanguage bento — Anima dump recoded, artboard 898×~453 */
+    .bento-lang {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 1.34em;
+      width: 100%;
+      height: 100%;
+      font-size: 2.6cqw;
+      background: transparent;
+    }
+    .bento-lang-row {
+      display: flex;
+      align-items: center;
+      gap: 0.79em;
+      min-height: 1.98em;
+    }
+    .bento-lang-row-wide {
+      gap: 1.58em;
+    }
+    .bento-lang-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.76em;
+      padding: 0.61em 1.66em;
+      border-radius: 3.05em;
+      background: rgba(200, 200, 200, 0.05);
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+      transition: opacity 500ms var(--ease) var(--in-delay, 0ms), transform 500ms var(--ease) var(--in-delay, 0ms), background 160ms var(--ease);
+    }
+    .benefits.is-inview .bento-lang-pill {
+      opacity: 1;
+      transform: none;
+    }
+    .bento-lang.is-demo-running .bento-lang-pill {
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), background 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .benefits.is-inview .bento-lang-pill.is-hovered {
+      background: rgba(200, 200, 200, 0.14);
+      transform: scale(1.04);
+    }
+    .bento-lang-cursor {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 5;
+      width: 19px;
+      pointer-events: none;
+      opacity: 0;
+      will-change: transform;
+      filter: drop-shadow(-2px -3.3px 12.6px rgba(66, 235, 196, 0.48)) drop-shadow(2px 3.3px 12.6px rgba(66, 235, 196, 0.33));
+    }
+    .bento-lang.is-demo-running .bento-lang-cursor {
+      opacity: 1;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bento-lang-cursor { display: none; }
+      .benefits.is-inview .bento-lang-pill.is-hovered { transform: none; }
+    }
+    .bento-lang-flag {
+      flex-shrink: 0;
+      width: 1.98em;
+      height: 1.98em;
+      border-radius: 50%;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .bento-lang-flag img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .bento-lang-label {
+      font-size: 1em;
+      font-weight: 400;
+      line-height: 1.9;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .bento-lang-pill-1 { --in-delay: 360ms; }
+    .bento-lang-pill-2 { --in-delay: 400ms; }
+    .bento-lang-pill-3 { --in-delay: 440ms; }
+    .bento-lang-pill-4 { --in-delay: 480ms; }
+    .bento-lang-pill-5 { --in-delay: 520ms; }
+    .bento-lang-pill-6 { --in-delay: 560ms; }
+    .bento-lang-pill-7 { --in-delay: 600ms; }
+    .bento-lang-pill-8 { --in-delay: 640ms; }
+    .bento-lang-pill-9 { --in-delay: 680ms; }
+    .bento-lang-pill-10 { --in-delay: 720ms; }
+    .bento-lang-pill-11 { --in-delay: 760ms; }
+    .bento-lang-pill-12 { --in-delay: 800ms; }
+    .bento-lang-pill-13 { --in-delay: 840ms; }
+    .bento-lang-pill-14 { --in-delay: 880ms; }
+    .bento-lang-pill-15 { --in-delay: 920ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .bento-lang-pill {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .why-us { display: flex; flex-direction: column; gap: var(--space-xl); }
+    .why-us .intro { margin-bottom: 0; }
+    .why-us .intro h2 {
+      width: 680px; max-width: 100%; font-size: 32px; line-height: normal; font-weight: 500;
+      background: linear-gradient(to top, #fff 29.327%, #6883d9);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .why-us .intro .lede { max-width: 514px; }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-l); width: 100%; align-items: stretch;
+    }
+    .why-item {
+      position: relative;
+      overflow: hidden;
+      display: flex; flex-direction: column; align-items: stretch;
+      text-align: start;
+      gap: 0; min-width: 0;
+      padding: 0;
+      --why-item-inset: var(--space-l);
+      border-radius: var(--radius-card);
+      background: linear-gradient(90deg, #ffffff05 5.287%, #0000004d 90.312%);
+      backdrop-filter: blur(54px);
+      -webkit-backdrop-filter: blur(54px);
+    }
+    .why-item-copy { position: relative; z-index: 2; }
+    .why-item.stroke::after { z-index: 3; }
+    .why-item .side-rays-container {
+      position: absolute; inset: 0; z-index: 1;
+      pointer-events: none; overflow: hidden; border-radius: inherit;
+      opacity: 0.72;
+      transition: opacity 200ms var(--ease);
+    }
+    .why-item .side-rays-container canvas {
+      display: block; width: 100%; height: 100%;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .why-item:hover .side-rays-container { opacity: 0.84; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .why-item .side-rays-container { opacity: 0.55; }
+      .why-item:hover .side-rays-container { opacity: 0.55; }
+    }
+    .why-art {
+      position: relative; z-index: 1;
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex; align-items: center; justify-content: center;
+      width: 100%;
+      background: transparent;
+      pointer-events: none;
+    }
+    .why-art-media {
+      display: block;
+      width: 100%; max-width: 100%; max-height: 100%;
+      background: transparent;
+    }
+    .why-art-lottie {
+      aspect-ratio: 990 / 525;
+      transform: scale(1.08);
+    }
+    .why-art-lottie svg {
+      display: block;
+      width: 100%; height: 100%;
+    }
+    .why-art img.why-art-media {
+      height: auto;
+      object-fit: contain; object-position: center;
+    }
+    .why-item-copy {
+      display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-s);
+      width: 100%; flex-shrink: 0;
+      padding: var(--space-s) var(--why-item-inset) var(--space-l);
+    }
+    .why-item h3 { width: 100%; font-size: 20px; }
+    .why-item p { width: 100%; font-size: 16px; font-weight: 300; color: var(--color-muted); line-height: 25px; }
+
+    .use-list { display: flex; flex-direction: column; gap: 100px; }
+    .use {
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: minmax(537px, auto);
+      gap: var(--space-2xl); align-items: stretch;
+    }
+    .use-copy {
+      display: flex; flex-direction: column; justify-content: flex-start;
+      align-items: flex-start; text-align: start; align-self: stretch; min-height: 0;
+      gap: var(--space-m);
+    }
+    .use-copy-top { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-m); flex: 1 1 auto; }
+    .use-stats { flex-shrink: 0; }
+    .use-copy h3 { font-size: 24px; font-weight: 500; line-height: 1.3; color: #fff; max-width: none; }
+    .use-copy .lede { max-width: none; }
+    .use-stats { display: flex; gap: var(--space-2xl); width: 100%; }
+    .use-stats .stat {
+      flex: 1; min-width: 0; border-radius: 30px;
+      padding: var(--space-l) var(--space-2xl); gap: 10px;
+      background: linear-gradient(90deg, #ffffff05 5.287%, #0000004d 90.312%);
+      backdrop-filter: blur(54px);
+      transition: background 220ms var(--ease), box-shadow 220ms var(--ease), transform 220ms var(--ease);
+    }
+    .use-stats .stat-value { font-size: 64px; }
+    .use-shot {
+      position: relative; margin: 0; align-self: stretch;
+      border-radius: 32px; overflow: hidden; background: #0b0f1b;
+    }
+    .use-shot .media {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+
+    /* Glows + stars sit behind Integrations and Setup (Figma Frame 1440×1024, y: -67). */
+    .int-setup-stage { position: relative; }
+    .int-setup-stage canvas.stars {
+      position: absolute; top: -67px; left: 50%; z-index: 0;
+      width: 1440px; height: 1024px; max-width: none;
+      transform: translateX(-50%); pointer-events: none; opacity: 0.85;
+    }
+    .integrations-stage { position: relative; z-index: 1; overflow: visible; }
+    .integrations-stage .wrap { position: relative; z-index: 2; }
+    .int-glows {
+      position: absolute; top: -67px; left: 50%; z-index: 0;
+      width: 1440px; height: 1024px; transform: translateX(-50%); pointer-events: none;
+    }
+    .int-glow { position: absolute; border-radius: 50%; }
+    .int-glow-a {
+      width: 1117px; height: 772px; left: calc(50% - 1117px / 2 + 0.5px); top: 200px;
+      background: radial-gradient(54.42% 141.05% at 50% 50%, rgba(122, 102, 240, 0.5) 0%, rgba(52, 69, 152, 0.5) 54.81%);
+      filter: blur(128.409px);
+    }
+    .int-glow-b {
+      width: 319px; height: 293px; left: calc(50% - 319px / 2 - 0.5px); top: 38px;
+      background: rgba(116, 135, 227, 0.3);
+      filter: blur(80.6376px);
+    }
+    .int-glow-c {
+      width: 461px; height: 575px; left: calc(50% - 461px / 2 - 1.5px); top: 169px;
+      background: linear-gradient(180deg, rgba(164, 248, 241, 0.09) 0%, rgba(158, 170, 227, 0.09) 100%);
+      filter: blur(92.6561px);
+    }
+    .logo-marquee {
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+    }
+    .logo-marquee-track {
+      display: flex; width: max-content;
+      animation: logo-marquee 32s linear infinite;
+    }
+    @keyframes logo-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(-1 * var(--marquee-shift, 50%))); }
+    }
+    html[dir="rtl"] .logo-marquee-track { animation-direction: reverse; }
+    .logo-row {
+      display: flex; flex-wrap: nowrap; align-items: center;
+      gap: var(--space-xl); padding: 40px var(--space-l);
+    }
+    .logo-tile {
+      display: grid; place-items: center; flex-shrink: 0;
+      width: 96px; height: 96px; border-radius: 24px;
+      background: rgba(0, 0, 0, 0.09);
+      box-shadow: inset 0 7px 8px rgba(189, 189, 189, 0.1);
+    }
+    .logo-tile img {
+      width: 60%; height: 60%; max-width: none; object-fit: contain;
+    }
+
+    .setup-stage { position: relative; z-index: 1; --setup-ellipse-top: -96px; }
+    .setup-stage .wrap { position: relative; z-index: 1; }
+    .setup-veil {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(var(--space-3xl) + var(--setup-ellipse-top) + 400px);
+      bottom: 0;
+      background: var(--color-canvas);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .setup-ellipse {
+      position: absolute;
+      left: -87px;
+      top: var(--setup-ellipse-top);
+      width: 1440px;
+      height: 439px;
+      max-width: none;
+      display: block;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .setup-ellipse-stroke {
+      stroke: url(#setup-ellipse-grad);
+      stroke-width: 2;
+      fill: none;
+      vector-effect: non-scaling-stroke;
+    }
+    .setup-stage .intro,
+    .setup-stage .setup { position: relative; z-index: 1; }
+    .setup {
+      display: grid; grid-template-columns: 503px 1fr; gap: 110px;
+      padding-inline: 32px; align-items: start;
+    }
+    .setup-shot {
+      position: relative; width: 503px; height: 600px; margin: 0; overflow: hidden;
+    }
+    .setup-shot img {
+      position: absolute; left: 50%; top: -0.43px; width: 390px; height: 620px;
+      max-width: none; transform: translateX(-50%); object-fit: contain;
+    }
+    .setup-shot::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 181px;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(1, 2, 4, 0) 0%, rgba(1, 2, 4, 0.61) 36.818%, var(--color-canvas) 80%, var(--color-canvas) 100%);
+    }
+    .fold-list { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+    .fold {
+      border-radius: 24px; padding: var(--space-l);
+      background: linear-gradient(90deg, #ffffff05 5.287%, #0000004d 90.312%);
+      backdrop-filter: blur(54px);
+    }
+    .fold summary {
+      list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--space-m);
+      cursor: pointer; font-size: 24px; font-weight: 500; color: #fff; line-height: normal;
+      transition: opacity 160ms var(--ease);
+    }
+    .fold summary::-webkit-details-marker { display: none; }
+    .fold-label { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .fold-icon { width: 24px; height: 24px; flex-shrink: 0; max-width: none; object-fit: contain; }
+    .fold-icon-lg { width: 30px; height: 30px; }
+    .fold-toggle {
+      width: 24px; height: 24px; flex-shrink: 0; border-radius: 60px;
+      display: grid; place-items: center; background: rgba(255, 255, 255, 0.2);
+      transform: rotate(180deg);
+      transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1), background 220ms var(--ease);
+    }
+    .fold-toggle img { width: 12px; height: 7px; max-width: none; }
+    .fold[open]:not(.is-closing) .fold-toggle {
+      transform: rotate(0deg);
+      background: rgba(255, 255, 255, 0.65);
+    }
+    .fold-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fold[open]:not(.is-closing) .fold-panel { grid-template-rows: 1fr; }
+    .fold-panel-inner { overflow: hidden; min-height: 0; }
+    .fold-panel-inner > .lede {
+      margin-top: var(--space-m); max-width: none;
+      opacity: 0; filter: blur(2px); transform: translateY(-4px);
+      transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1), filter 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fold[open]:not(.is-closing) .fold-panel-inner > .lede {
+      opacity: 1; filter: blur(0); transform: translateY(0);
+    }
+    .fold:not(.is-fold-ready) .fold-panel,
+    .fold:not(.is-fold-ready) .fold-panel-inner > .lede,
+    .fold:not(.is-fold-ready) .fold-toggle { transition: none !important; }
+    .fold:not(.is-fold-ready)[open] .fold-panel { grid-template-rows: 1fr; }
+    .fold:not(.is-fold-ready)[open] .fold-panel-inner > .lede { opacity: 1; filter: none; transform: none; }
+
+    .consult {
+      position: relative;
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: stretch;
+      height: 498px; border-radius: 32px; padding: var(--space-xl); overflow: hidden;
+      background: rgba(14, 17, 37, 0.5);
+    }
+    .consult::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 5.287%, rgba(0,0,0,0.06) 90.312%);
+    }
+    .consult canvas.stars {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; opacity: 0.85; z-index: 1;
+    }
+    .consult-glows { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .consult-glow {
+      position: absolute; border-radius: 50%; filter: blur(191px);
+    }
+    .consult-glow-a {
+      width: 705px; height: 629px; left: -98px; top: -307px; background: #7d78fa;
+    }
+    .consult-glow-b {
+      width: 609px; height: 518px; left: 1004px; top: 196px; background: #78fae0;
+    }
+    .consult .intro, .consult form { position: relative; z-index: 2; }
+    .consult .intro { height: 100%; margin-bottom: 0; justify-content: space-between; }
+    .consult .intro > div { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+    .consult h2 { font-size: clamp(32px, 4vw, 48px); line-height: 0.92; max-width: none; color: #fff; background: none; }
+    .consult .lede { max-width: 485px; color: #fff; }
+    .consult form { display: flex; flex-direction: column; justify-content: flex-end; gap: var(--space-xl); min-width: 0; height: 100%; }
+    .consult .fields { display: flex; flex-direction: column; gap: 12px; }
+    .consult .field { display: flex; flex-direction: column; margin: 0; gap: var(--space-s); }
+    .consult .field label { font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, 0.9); }
+    .field-box {
+      display: flex; align-items: center; gap: var(--space-s);
+      box-sizing: border-box; width: 100%; height: 56px; padding: 0 var(--space-m);
+      border: 1px solid rgba(255, 255, 255, 0.02); border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .field-box:focus-within {
+      border-color: var(--color-accent);
+      box-shadow: 0 4px 10.2px rgba(180, 170, 255, 0.06);
+    }
+    .field-icon { width: 24px; height: 24px; flex-shrink: 0; max-width: none; object-fit: contain; object-position: center; opacity: 0.5; }
+    .field-box input, .field-box textarea {
+      flex: 1; min-width: 0; margin: 0; padding: 0; border: 0; border-radius: 0;
+      background: transparent; color: #fff; font-weight: 500;
+      height: 24px; line-height: 24px; box-shadow: none;
+    }
+    .field-box textarea { resize: none; overflow: hidden; }
+    .field-box input:focus, .field-box input:focus-visible,
+    .field-box textarea:focus, .field-box textarea:focus-visible { outline: none; }
+    .field-box input::placeholder, .field-box textarea::placeholder { color: rgba(255, 255, 255, 0.5); }
+    .consult .cta-secondary {
+      width: 100%; height: 56px; border: 0; border-radius: 50px;
+      overflow: hidden;
+    }
+    .consult .cta-secondary::before,
+    .consult-dialog-card .cta-secondary::before {
+      width: 120%;
+      height: 480%;
+      transform: translate(-50%, -50%) scale(0.7);
+    }
+    .consult form.is-sent,
+    .consult-dialog-card form.is-sent { justify-content: center; }
+    .consult form.is-sent .fields,
+    .consult form.is-sent > .cta-secondary,
+    .consult-dialog-card form.is-sent .fields,
+    .consult-dialog-card form.is-sent > .cta-secondary { display: none; }
+    .consult-success {
+      display: none; flex-direction: column; align-items: flex-start; gap: var(--space-m);
+      animation: consult-success-in 220ms var(--ease);
+    }
+    .consult form.is-sent .consult-success,
+    .consult-dialog-card form.is-sent .consult-success { display: flex; }
+    .consult-success-mark {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: grid; place-items: center; background: #fff;
+    }
+    .consult-success-mark svg { width: 22px; height: 22px; }
+    .consult-success h3 { font-size: 24px; color: #fff; }
+    .consult-success .lede { max-width: 420px; color: var(--color-muted); }
+    .consult-success .cta { width: 100%; height: 56px; margin-top: var(--space-s); }
+    @keyframes consult-success-in {
+      from { opacity: 0; transform: translateY(8px) scale(0.97); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .consult-dialog {
+      width: min(586px, calc(100vw - 48px));
+      max-height: min(90vh, 720px);
+      margin: auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      overflow: visible;
+    }
+    .consult-dialog::backdrop {
+      background: rgba(1, 2, 4, 0.72);
+      backdrop-filter: blur(8px);
+    }
+    .consult-dialog[open] {
+      animation: consult-dialog-in 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .consult-dialog-card {
+      position: relative;
+      display: flex; flex-direction: column; gap: var(--space-xl);
+      max-height: min(90vh, 720px); overflow: auto;
+      border-radius: 32px; padding: var(--space-xl);
+      background: rgba(14, 17, 37, 0.92);
+    }
+    .consult-dialog-card h2 { font-size: 32px; color: #fff; background: none; max-width: none; }
+    .consult-dialog-card .lede { max-width: none; color: #fff; }
+    .consult-dialog-card form { display: flex; flex-direction: column; gap: var(--space-m); }
+    .consult-dialog-card .fields { display: flex; flex-direction: column; gap: 12px; }
+    .consult-dialog-card .field { display: flex; flex-direction: column; margin: 0; gap: var(--space-s); }
+    .consult-dialog-card .field label { font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, 0.9); }
+    .consult-dialog-card .cta-secondary { width: 100%; height: 56px; border: 0; border-radius: 50px; overflow: hidden; }
+    .consult-dialog-close {
+      position: absolute; top: 16px; right: 16px; z-index: 2;
+      width: 36px; height: 36px; border: 0; border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 22px; line-height: 1;
+    }
+    @keyframes consult-dialog-in {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .reviews-intro h2 { max-width: 342px; }
+    .reviews-intro .lede { max-width: 342px; text-wrap: balance; }
+    .reviews {
+      display: flex; justify-content: space-between; align-items: stretch;
+      gap: var(--space-m); padding: var(--space-l) 3px;
+    }
+    .quote { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-m); flex: 1; min-width: 0; }
+    .quote-mark { width: 80px; height: 80px; overflow: visible; }
+    .quote-mark img {
+      width: 80px; height: 80px; max-width: none; object-fit: contain;
+      transform: rotate(180deg);
+    }
+    .quote blockquote { font-size: 16px; line-height: 1.13; color: var(--color-faint); width: 350px; max-width: 100%; }
+    .quote em { font-style: normal; font-weight: 500;
+      background: linear-gradient(90deg, #fff, #5361dd); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .who { display: flex; flex-direction: column; align-items: center; gap: var(--space-s); }
+    .avatar { width: 62px; height: 62px; border-radius: 130px; object-fit: cover; background: #1a1630; }
+    .who .name { font-weight: 500; color: #fff; line-height: 1.13; }
+    .who .role { font-size: 14px; font-weight: 500; color: var(--color-faint); }
+    .quote-logo { height: 65px; display: flex; align-items: center; justify-content: center; }
+    .quote-logo img { max-width: none; height: auto; }
+    .quote-logo-arcline { width: 108px; transform: translateY(-14px); }
+    .quote-logo-brightpath { width: 152px; }
+    .quote-logo-ilgcc { display: flex; align-items: center; gap: 4px; }
+    .quote-logo-ilgcc img { width: 41px; height: 41px; }
+    .quote-logo-ilgcc span { font-weight: 700; font-size: 22px; line-height: 1; color: rgba(255, 255, 255, 0.5); }
+
+    .faq-grid { display: grid; grid-template-columns: 1fr minmax(0, 770px); gap: var(--space-xl); align-items: start; }
+    .faq-grid .intro { margin-bottom: 0; padding-block: var(--space-m); }
+    .faq-list { gap: var(--space-p); }
+
+    .demo {
+      position: relative; overflow: hidden; border-radius: 50px;
+      background: rgba(10, 16, 62, 0.5);
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: var(--space-xl); padding: var(--space-3xl) 24px 0;
+    }
+    .demo-glow {
+      position: absolute; left: 50%; top: -233px; z-index: 0;
+      width: 1538px; height: 1236px;
+      transform: translateX(-50%) scale(1.08);
+      transform-origin: center top;
+      pointer-events: none;
+    }
+    .demo-glow img {
+      position: absolute; inset: -9.21% -7.4%;
+      width: auto; height: auto; max-width: none;
+    }
+    .demo-copy {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-m);
+      width: 100%;
+    }
+    .demo h2 {
+      color: #fff; background: none;
+      width: 680px; max-width: 100%; font-size: 32px; font-weight: 500;
+    }
+    .demo-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-l); }
+    .demo-shot {
+      position: relative; z-index: 1; margin: 0;
+      width: min(952px, 100%); height: 537px;
+      border-radius: 32px 32px 0 0; overflow: hidden;
+      box-shadow: -7px -6px 59px rgba(5, 15, 69, 0.25);
+    }
+    .demo-shot .media {
+      width: 100%; height: 677px; max-width: none;
+      object-fit: cover; object-position: top center;
+    }
+
+    .site-footer { padding-block: var(--space-3xl) var(--space-xl); }
+    .footer-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3xl); }
+    .newsletter { display: flex; flex-direction: column; gap: var(--space-xl); max-width: 518px; }
+    .newsletter h3 { font-size: 32px; }
+    .nl-bar {
+      position: relative; display: flex; align-items: center;
+      height: 53px; padding: 4px 4px 4px 20px; border-radius: 50px;
+      background: var(--color-surface);
+      transition: background 160ms var(--ease);
+    }
+    .nl-bar:focus-within { background: rgba(255, 255, 255, 0.08); }
+    .nl-bar input { flex: 1; border: 0; background: transparent; min-width: 0; }
+    .nl-bar input:focus, .nl-bar input:focus-visible { outline: none; }
+    .nl-bar .cta { height: 46px; }
+    .social { display: flex; align-items: center; gap: 20px; }
+    .social.nav-social { display: none; }
+    .social a {
+      width: 56px; height: 56px; padding: 13px; border-radius: 65px;
+      display: grid; place-items: center;
+      background: linear-gradient(90deg, #ffffff05 5.287%, #0000004d 90.312%);
+      backdrop-filter: blur(54px);
+    }
+    .social a img { width: 31px; height: 31px; max-width: none; }
+    .cols { display: flex; flex-wrap: wrap; gap: 100px; }
+    .cols h4 { font-size: 20px; font-weight: 600; margin-bottom: 20px; }
+    .cols li + li { margin-top: var(--space-p); }
+    .legal { margin-top: var(--space-p); padding-top: var(--space-p); border-top: 3px solid rgba(102, 134, 215, 0.2); font-size: 16px; color: var(--color-faint); letter-spacing: 0.04em; }
+    .legal a { color: inherit; }
+
+    @media (hover: hover) and (pointer: fine) {
+      .logo:hover { opacity: 0.8; }
+      .main-nav > ul a:not(.is-active):hover { background: rgba(255, 255, 255, 0.08); }
+      .lang-btn:not([aria-checked="true"]):hover { color: var(--color-text); }
+      .nav-toggle:hover { opacity: 0.7; }
+      .cta-primary:hover {
+        box-shadow:
+          inset 2px 4px 18px rgba(255, 255, 255, 0.2),
+          0 10px 28px rgba(75, 84, 219, 0.4);
+      }
+      .cta-primary:hover .cta-orb::before { opacity: 0; }
+      .cta-primary:hover .cta-orb::after { opacity: 1; transform: scale(1); }
+      .cta-inverse:hover { background: #ecefff; color: var(--color-on-white); }
+      .cta-secondary:hover {
+        color: var(--color-on-white);
+        background: transparent;
+        outline-color: #fff;
+        box-shadow: 0 0 22px rgba(255, 255, 255, 0.3);
+      }
+      .cta-secondary:hover::before {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .consult .cta-secondary:hover,
+      .consult-dialog-card .cta-secondary:hover,
+      .consult .cta-secondary:focus-visible,
+      .consult-dialog-card .cta-secondary:focus-visible {
+        color: var(--color-on-white);
+        background: transparent;
+        outline-color: #fff;
+        box-shadow: 0 0 22px rgba(255, 255, 255, 0.3);
+      }
+      .consult .cta-secondary:hover::before,
+      .consult-dialog-card .cta-secondary:hover::before,
+      .consult .cta-secondary:focus-visible::before,
+      .consult-dialog-card .cta-secondary:focus-visible::before {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .cta-ghost:hover { background: rgba(255, 255, 255, 0.14); }
+      .fold summary:hover { opacity: 0.8; }
+      .social a:hover { background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 5.287%, rgba(0, 0, 0, 0.28) 90.312%); }
+      .nav-social a:hover { background: rgba(255, 255, 255, 0.18); opacity: 1; }
+      .cols a:hover { color: var(--color-text); }
+      .legal a:hover { color: var(--color-text); }
+      .consult-dialog-close:hover { background: rgba(255, 255, 255, 0.18); }
+      .use-stats .stat:hover {
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.09) 5.287%, rgba(0, 0, 0, 0.38) 90.312%);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+      }
+      .use-stats .stat.stroke:hover::after {
+        background: linear-gradient(118deg, rgba(196, 196, 196, 0.08) 46%, rgba(235, 237, 255, 0.38) 53%, rgba(217, 217, 217, 0.08) 66%);
+      }
+    }
+
+    @media (max-width: 1100px) {
+      body.is-nav-open::before {
+        content: "";
+        position: fixed; inset: 0; z-index: 50;
+        background: rgba(1, 2, 4, 0.88);
+        pointer-events: auto;
+      }
+      .site-header {
+        padding: max(var(--space-s), env(safe-area-inset-top)) 0 var(--space-s);
+        z-index: 60;
+      }
+      .site-header-bar { padding-inline: var(--space-m); }
+      .site-header.is-scrolled .site-header-bar {
+        width: calc(100% - 24px);
+        padding: 6px 10px 6px 12px;
+      }
+      .site-header.is-nav-open { border-bottom-color: transparent; }
+      .site-header-bar { position: relative; z-index: 60; }
+      .logo,
+      .header-actions { position: relative; z-index: 2; }
+      .logo { width: 132px; height: 25px; }
+      .logo img { width: 132px; height: 25px; }
+      .header-actions { display: flex; }
+      .nav-toggle { display: inline-flex; }
+      .main-nav {
+        display: flex; flex-direction: column; gap: 0;
+        position: fixed; z-index: 1;
+        top: 0; inset-inline: 0; height: 88dvh;
+        padding: 72px 24px 28px;
+        border-radius: 0 0 36px 36px;
+        background: var(--color-canvas);
+        overflow: hidden;
+        transform: translateY(-16px);
+        opacity: 0; filter: blur(2px);
+        visibility: hidden; pointer-events: none;
+        transition:
+          transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 400ms cubic-bezier(0.22, 1, 0.36, 1),
+          filter 400ms cubic-bezier(0.22, 1, 0.36, 1),
+          visibility 400ms;
+      }
+      .site-header.is-nav-open .main-nav {
+        transform: translateY(0);
+        opacity: 1; filter: blur(0);
+        visibility: visible; pointer-events: auto;
+      }
+      .hero-stage:has(.site-header.is-nav-open) { overflow: visible; }
+      .nav-glows {
+        display: block; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      }
+      .main-nav > ul {
+        position: relative; z-index: 1;
+        flex: none; width: 100%; margin-inline: 0;
+        flex-direction: column; align-items: flex-start; justify-content: flex-start;
+        gap: var(--space-m);
+        padding: 0; border-radius: 0; background: none; backdrop-filter: none;
+      }
+      .main-nav > ul a {
+        display: block; padding: 4px 0; border-radius: 0;
+        font-size: clamp(24px, 6.5vw, 32px); line-height: 1.2; font-weight: 500;
+      }
+      .main-nav > ul a:hover { background: none; opacity: 0.72; }
+      .main-nav > ul a.is-active {
+        background: none; backdrop-filter: none;
+      }
+      .main-nav > ul a.is-active::after { content: none; }
+      .nav-extra {
+        position: relative; z-index: 1;
+        margin-inline-start: 0;
+        flex-direction: column; align-items: flex-start; gap: 20px;
+        margin-top: auto; padding: 24px 0 0;
+        border-top: 1px solid rgba(229, 229, 229, 0.1);
+      }
+      .nav-social,
+      .social.nav-social {
+        display: flex; flex-direction: row; flex-wrap: nowrap;
+        align-items: center; gap: 12px; width: auto;
+        padding: 0; border-radius: 0;
+        background: none; backdrop-filter: none;
+      }
+      .nav-social a {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .nav-extra .cta { width: auto; }
+
+      html, body { overflow-x: clip; }
+      .wrap { width: min(1268px, calc(100% - 48px)); }
+      .band { padding-block: var(--space-2xl); }
+      .intro { margin-bottom: var(--space-l); }
+      h3 { font-size: 20px; }
+      .cta { font-size: 15px; padding: 12px 20px; }
+      .eyebrow { font-size: 12px; padding: 6px 12px; }
+
+      .hero { padding: 40px 24px 0; gap: var(--space-p); }
+      .hero h1 { font-size: clamp(22px, 5.6vw, 26px); line-height: 1.18; }
+      .hero-actions { gap: var(--space-p); }
+      .hero-actions .cta {
+        width: auto;
+        min-height: 44px;
+        padding: 10px 18px;
+        font-size: 14px;
+      }
+      .hero-shot { margin-top: var(--space-l); }
+      .hero-fade { height: calc(min(1060px, 92vw) * 250 / 1060); }
+      .hero-sub,
+      .lede,
+      .card-copy p,
+      .pc-copy p,
+      .why-item p,
+      .quote blockquote,
+      .legal {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .benefits .intro h2,
+      .why-us .intro h2,
+      .demo h2,
+      .stats-heading,
+      .newsletter h3,
+      h2 {
+        font-size: 24px;
+        line-height: 1.25;
+      }
+      .consult h2,
+      .consult-dialog-card h2 {
+        font-size: 24px;
+        line-height: 1.2;
+      }
+
+      .stats { grid-template-columns: 1fr; }
+      .stats-heading { max-width: 16em; }
+      .stats-numbers {
+        justify-self: stretch;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 100%;
+        margin-inline: 0;
+        gap: var(--space-s);
+        flex-wrap: nowrap;
+      }
+      .stat { padding: var(--space-s) var(--space-p); flex: none; }
+      .stat-value { font-size: 28px; }
+      .stat-label { font-size: 12px; }
+
+      .benefit-grid { grid-template-columns: 1fr; grid-template-rows: none; height: auto; gap: var(--space-m); }
+      .card,
+      .pc { min-height: 340px; border-radius: 20px; }
+      .card { display: flex; flex-direction: column; height: auto; grid-row: auto; }
+      .card .card-media {
+        flex: 0 0 min(220px, 58vw);
+        height: min(220px, 58vw);
+      }
+      .bento-chats-row-1 { --y: 0%; }
+      .bento-chats-row-2 { --y: 22%; }
+      .bento-chats-row-3 { --y: 44%; }
+      .bento-chats-row-4 { --y: 66%; }
+      .card:not(.card-wide) .card-media .media {
+        width: 108%; height: 108%; left: -4%; top: -4%;
+      }
+      .card-copy { padding: 16px; flex: 1; }
+      .card-copy h3 { font-size: 20px; }
+      .pc {
+        display: flex; flex-direction: column;
+        height: auto; grid-template-columns: none;
+        grid-template-rows: none;
+      }
+      .pc .card-media {
+        order: -1;
+        height: min(220px, 58vw);
+        flex: 0 0 min(220px, 58vw);
+        overflow: hidden;
+      }
+      .pc-copy {
+        flex: 1; width: auto;
+        padding: 16px; gap: var(--space-s);
+        justify-content: flex-start;
+      }
+      .pc-copy h3 { font-size: 20px; white-space: normal; }
+      .pc-copy .cta { display: none; }
+      .pc-shot {
+        position: relative; top: 0; left: 6%;
+        right: auto; width: 106%; height: 100%;
+      }
+      .pc-shot .media { object-position: left center; }
+
+      .why-grid { grid-template-columns: 1fr; gap: var(--space-m); }
+      .why-item { --why-item-inset: var(--space-m); }
+      .why-item p { max-width: none; }
+      @media (max-width: 560px) {
+        .why-grid { grid-template-columns: 1fr; }
+      }
+
+      .use-list { gap: var(--space-3xl); }
+      .use { grid-template-columns: 1fr; grid-template-rows: auto; gap: var(--space-l); }
+      .use-shot { grid-row: 1; min-height: 240px; height: 240px; border-radius: 20px; }
+      .use-copy { grid-row: 2; min-height: 0; }
+      .use-copy h3 { font-size: 20px; }
+      .use-stats { flex-direction: row; gap: var(--space-p); }
+      .use-stats .stat { padding: var(--space-m) var(--space-p); }
+      .use-stats .stat-value { font-size: clamp(24px, 8vw, 36px); }
+
+      .logo-marquee { padding-block: var(--space-m); }
+      .logo-row { padding: var(--space-l) var(--space-m); }
+
+      .setup-stage { --setup-ellipse-top: -44px; }
+      .setup-ellipse {
+        left: 50%;
+        width: min(560px, 120vw);
+        height: calc(min(560px, 120vw) * 441 / 1442 * 1.16);
+        transform: translateX(-50%);
+      }
+      .setup-veil {
+        top: calc(var(--space-2xl) + var(--setup-ellipse-top) + min(560px, 120vw) * 441 / 1442 * 1.16 * 0.9);
+      }
+      .setup { grid-template-columns: 1fr; padding-inline: 0; gap: var(--space-xl); }
+      .setup-shot {
+        width: min(220px, 58vw);
+        height: min(310px, 82vw);
+        margin-inline: auto;
+        overflow: hidden;
+      }
+      .setup-shot img {
+        width: min(220px, 58vw);
+        height: auto;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+      }
+      .fold { padding: var(--space-m); border-radius: 16px; }
+      .fold summary { font-size: 16px; gap: var(--space-s); }
+
+      .consult {
+        grid-template-columns: 1fr; height: auto; gap: var(--space-l);
+        padding: var(--space-l); border-radius: 20px;
+      }
+      .consult .intro {
+        height: auto;
+        gap: var(--space-l);
+        align-items: center;
+        text-align: center;
+      }
+      .consult .intro > div { align-items: center; }
+      .consult .lede { margin-inline: auto; }
+      .consult form { height: auto; gap: var(--space-xl); }
+      .consult-dialog { width: min(586px, calc(100vw - 32px)); }
+      .consult-dialog-card { padding: var(--space-l); border-radius: 20px; gap: var(--space-l); }
+      .consult-dialog-close { width: 44px; height: 44px; top: 12px; right: 12px; }
+      .field-box { height: 48px; }
+      .field-icon { width: 20px; height: 20px; filter: none; }
+      .field-box input, .field-box textarea { font-size: 16px; height: 20px; line-height: 20px; }
+      .consult .cta-secondary,
+      .consult-dialog-card .cta-secondary { height: 48px; font-size: 15px; }
+      .nl-bar input { font-size: 16px; }
+
+      .reviews {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: var(--space-2xl);
+        padding-inline: 0;
+      }
+      .quote { flex: none; width: 100%; }
+      .reviews-intro h2 { max-width: none; }
+      .quote-mark, .quote-mark img { width: 64px; height: 64px; }
+      .quote blockquote { width: auto; }
+      .faq-grid { grid-template-columns: 1fr; }
+
+      .demo { border-radius: 24px; padding: var(--space-xl) 16px 0; gap: var(--space-l); }
+      .demo-actions { gap: var(--space-p); flex-direction: column; align-items: center; width: auto; max-width: none; }
+      .demo-actions .cta { width: auto; }
+      .demo-shot { height: 240px; border-radius: 20px 20px 0 0; }
+      .demo-shot .media { height: 100%; }
+
+      .cols { flex-direction: column; gap: var(--space-xl); }
+      .cols h4 { font-size: 16px; margin-bottom: 12px; }
+      .site-footer { padding-block: var(--space-2xl) var(--space-l); }
+      .social { gap: 12px; }
+      .social a { width: 48px; height: 48px; padding: 10px; }
+      .social a img { width: 24px; height: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-stage">
+    <canvas class="stars" aria-hidden="true"></canvas>
+    <div class="hero-glows" aria-hidden="true">
+      <div class="glow glow-a"></div>
+      <div class="glow glow-b"></div>
+      <div class="glow glow-c"></div>
+    </div>
+
+    <div class="site-header-pad" aria-hidden="true"></div>
+    <header class="site-header">
+      <div class="site-header-bar">
+      <a class="logo" href="#hero"><img src="assets/logo.svg" alt="Felix Labs" width="176" height="33"></a>
+      <nav class="main-nav" id="main-nav" aria-label="Primary">
+        <div class="nav-glows" aria-hidden="true">
+          <div class="glow glow-a"></div>
+          <div class="glow glow-b"></div>
+          <div class="glow glow-c"></div>
+        </div>
+        <ul>
+          <li><a class="is-active" href="#hero" data-i18n="nav.home">Home</a></li>
+          <li><a href="#use-cases" data-i18n="nav.useCases">Use Cases</a></li>
+          <li><a href="#integrations" data-i18n="nav.integrations">Integrations</a></li>
+          <li><a href="#about" data-i18n="nav.about">About Us</a></li>
+        </ul>
+        <div class="nav-extra">
+          <ul class="social nav-social">
+            <li><a class="stroke" href="#" aria-label="Instagram"><img src="assets/social/instagram.svg" alt="" width="31" height="31"></a></li>
+            <li><a class="stroke" href="#" aria-label="Facebook"><img src="assets/social/facebook.svg" alt="" width="31" height="31"></a></li>
+            <li><a class="stroke" href="#" aria-label="LinkedIn"><img src="assets/social/linkedin.svg" alt="" width="31" height="31"></a></li>
+            <li><a class="stroke" href="#" aria-label="Discord"><img src="assets/social/discord.svg" alt="" width="31" height="31"></a></li>
+          </ul>
+          <div class="lang" id="lang-switcher" role="radiogroup" data-lang="en" data-i18n-aria="lang.group" aria-label="Language">
+            <span class="lang-slider" aria-hidden="true"></span>
+            <button class="lang-btn" type="button" role="radio" data-lang="en" aria-checked="true" data-i18n-aria="lang.en" aria-label="English">ENG</button>
+            <button class="lang-btn" type="button" role="radio" data-lang="he" aria-checked="false" data-i18n-aria="lang.he" aria-label="Hebrew">עב</button>
+          </div>
+          <a class="cta cta-primary" href="#consult"><span class="cta-label" data-i18n="cta.tryItOut">Try it out</span><span class="cta-glass" aria-hidden="true"><span class="cta-orb"></span></span></a>
+        </div>
+      </nav>
+      <div class="header-actions">
+        <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="main-nav" data-i18n-aria="nav.menu" aria-label="Menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+      </div>
+      </div>
+    </header>
+
+    <section id="hero" class="hero">
+      <h1 data-i18n="hero.title">Launch your AI sales agent in 5 minutes and double your conversion rate</h1>
+      <p class="hero-sub" data-i18n="hero.sub">Responds to your clients 24/7, never loses a single lead, and drives conversions to your target rate — all on autopilot.</p>
+      <div class="hero-actions">
+        <a class="cta cta-primary" href="#consult" data-consult-open><span class="cta-label" data-i18n="cta.getStarted">Get Started Today</span><span class="cta-glass" aria-hidden="true"><span class="cta-orb"></span></span></a>
+        <a class="cta cta-secondary" href="#consult"><span class="cta-label" data-i18n="cta.requestDemo">Request a Demo</span></a>
+      </div>
+    </section>
+    <figure class="hero-shot stroke">
+      <video class="media hero-shot-media" poster="Screens/Overview%201.png" autoplay muted playsinline preload="auto" aria-label="Felix Labs overview dashboard">
+        <source src="assets/hero/Overview.mp4" type="video/mp4">
+      </video>
+    </figure>
+    <div class="hero-fade" aria-hidden="true"></div>
+  </div>
+
+  <main id="main">
+    <section class="band wrap stats" aria-label="Results" data-i18n-aria="stats.aria">
+      <div class="stats-intro">
+        <h2 class="stats-heading" data-i18n="stats.title">Proven results that speak for themselves across every industry we serve</h2>
+        <p class="lede" data-i18n="stats.lede">Real metrics from our clients after implementing AI-powered agents</p>
+      </div>
+      <div class="stats-numbers">
+        <div class="stat"><span class="stat-value">2x</span><span class="stat-label" data-i18n="stats.conversion">Conversion</span></div>
+        <div class="stat"><span class="stat-value">&lt;30s</span><span class="stat-label" data-i18n="stats.time">First reply</span></div>
+        <div class="stat"><span class="stat-value">24/7</span><span class="stat-label" data-i18n="stats.roi">Availability</span></div>
+      </div>
+    </section>
+
+    <section class="band wrap benefits">
+      <div class="intro">
+        <span class="eyebrow" data-i18n="eyebrow.benefits">Benefits</span>
+        <h2 data-i18n-html="benefits.title">Everything you need to turn<br>leads into loyal customers</h2>
+        <p class="lede" data-i18n="benefits.lede">Our AI agents handle the heavy lifting so your team can focus on closing</p>
+      </div>
+      <div class="benefit-grid">
+        <article class="card stroke">
+          <div class="card-media">
+            <div class="media bento-int" aria-hidden="true">
+              <span class="bento-int-disc bento-int-disc-a"></span>
+              <span class="bento-int-disc bento-int-disc-b"></span>
+              <span class="bento-int-beam bento-int-beam-a"></span>
+              <span class="bento-int-beam bento-int-beam-b"></span>
+              <svg class="bento-int-orbits" viewBox="0 0 620.2 402" focusable="false">
+                <defs>
+                  <linearGradient id="bento-orbit-grad-a" gradientUnits="userSpaceOnUse" x1="40" y1="225" x2="580" y2="225">
+                    <stop offset="0.32" stop-color="rgba(235,237,255,0)"/>
+                    <stop offset="0.46" stop-color="rgba(186,192,255,0.35)"/>
+                    <stop offset="0.53" stop-color="rgba(235,237,255,0.95)"/>
+                    <stop offset="0.60" stop-color="rgba(186,192,255,0.35)"/>
+                    <stop offset="0.74" stop-color="rgba(235,237,255,0)"/>
+                    <animateTransform attributeName="gradientTransform" type="rotate" from="0 310.1 225" to="360 310.1 225" dur="12s" repeatCount="indefinite"/>
+                  </linearGradient>
+                  <linearGradient id="bento-orbit-grad-b" gradientUnits="userSpaceOnUse" x1="40" y1="225" x2="580" y2="225">
+                    <stop offset="0.32" stop-color="rgba(235,237,255,0)"/>
+                    <stop offset="0.46" stop-color="rgba(186,192,255,0.28)"/>
+                    <stop offset="0.53" stop-color="rgba(235,237,255,0.8)"/>
+                    <stop offset="0.60" stop-color="rgba(186,192,255,0.28)"/>
+                    <stop offset="0.74" stop-color="rgba(235,237,255,0)"/>
+                    <animateTransform attributeName="gradientTransform" type="rotate" from="360 310.1 225" to="0 310.1 225" dur="16s" repeatCount="indefinite"/>
+                  </linearGradient>
+                </defs>
+                <ellipse class="orbit-base" cx="310.1" cy="225" rx="230" ry="100" transform="rotate(-32 310.1 225)"/>
+                <ellipse class="orbit-base" cx="310.1" cy="225" rx="230" ry="100" transform="rotate(32 310.1 225)"/>
+                <ellipse class="orbit-shine" cx="310.1" cy="225" rx="230" ry="100" transform="rotate(-32 310.1 225)" stroke="url(#bento-orbit-grad-a)"/>
+                <ellipse class="orbit-shine" cx="310.1" cy="225" rx="230" ry="100" transform="rotate(32 310.1 225)" stroke="url(#bento-orbit-grad-b)"/>
+              </svg>
+              <span class="bento-int-node bento-int-ig stroke"><span class="bento-int-bob"><img src="assets/bento/icon-instagram.svg" alt=""></span></span>
+              <span class="bento-int-node bento-int-gmail stroke"><span class="bento-int-bob"><img src="assets/bento/icon-gmail.svg" alt=""></span></span>
+              <span class="bento-int-node bento-int-fb stroke"><span class="bento-int-bob"><img src="assets/bento/icon-facebook.svg" alt=""></span></span>
+              <span class="bento-int-node bento-int-browser stroke"><span class="bento-int-bob"><img src="assets/bento/icon-browser.svg" alt=""></span></span>
+              <span class="bento-int-node bento-int-wa stroke"><span class="bento-int-bob"><img src="assets/bento/icon-whatsapp.svg" alt=""></span></span>
+              <span class="bento-int-node bento-int-hub stroke"><span class="bento-int-bob"><img src="assets/bento/integrations-hub.png" alt=""></span></span>
+            </div>
+          </div>
+          <div class="card-copy">
+            <h3 data-i18n="benefits.card1.title">Always-On Engagement</h3>
+            <p data-i18n="benefits.card1.body">Your AI agent replies instantly at any hour, so no lead is lost while you sleep.</p>
+          </div>
+        </article>
+        <article class="card card-wide stroke">
+          <div class="card-media">
+            <div class="media bento-chats" aria-hidden="true">
+              <div class="bento-chats-stars"></div>
+              <div class="bento-chats-kb stroke">
+                <div class="bento-chats-kb-grid">
+                  <div class="bento-chats-kb-row">
+                    <span class="bento-chats-kb-pill" style="width:18.1%"></span>
+                    <span class="bento-chats-kb-pill" style="width:20%"></span>
+                    <span class="bento-chats-kb-pill" style="width:9.8%"></span>
+                    <span class="bento-chats-kb-pill" style="width:28.1%"></span>
+                    <span class="bento-chats-kb-pill" style="width:21.5%"></span>
+                  </div>
+                  <div class="bento-chats-kb-row">
+                    <span class="bento-chats-kb-pill" style="width:18.1%"></span>
+                    <span class="bento-chats-kb-pill" style="width:11.4%"></span>
+                    <span class="bento-chats-kb-pill" style="width:26.1%"></span>
+                    <span class="bento-chats-kb-pill" style="width:9.8%"></span>
+                    <span class="bento-chats-kb-pill" style="width:14.3%"></span>
+                    <span class="bento-chats-kb-pill" style="width:16.5%"></span>
+                  </div>
+                  <div class="bento-chats-kb-row">
+                    <span class="bento-chats-kb-pill" style="width:18.1%"></span>
+                    <span class="bento-chats-kb-pill" style="width:16%"></span>
+                    <span class="bento-chats-kb-pill" style="width:9.8%"></span>
+                    <span class="bento-chats-kb-pill" style="width:13.2%"></span>
+                    <span class="bento-chats-kb-pill" style="width:18.7%"></span>
+                    <span class="bento-chats-kb-pill" style="width:15.8%"></span>
+                  </div>
+                  <div class="bento-chats-kb-row">
+                    <span class="bento-chats-kb-pill" style="width:13.9%"></span>
+                    <span class="bento-chats-kb-pill" style="width:20%"></span>
+                    <span class="bento-chats-kb-pill" style="width:9.8%"></span>
+                    <span class="bento-chats-kb-pill" style="width:22.5%"></span>
+                    <span class="bento-chats-kb-pill" style="width:31%"></span>
+                  </div>
+                </div>
+                <div class="bento-chats-kb-select"></div>
+                <span class="bento-chats-kb-dot bento-chats-kb-dot-a"></span>
+                <span class="bento-chats-kb-dot bento-chats-kb-dot-b"></span>
+              </div>
+              <svg class="bento-chats-cursor" viewBox="0 0 18.645 23.921" fill="none" aria-hidden="true">
+                <path d="M.262.26 18.398 15.195H8.753l-5.299 8.477z" fill="#42ebc4" stroke="#fff" stroke-width="0.51"/>
+              </svg>
+              <div class="bento-chats-list">
+                <article class="bento-chats-row bento-chats-row-1 stroke">
+                  <span class="bento-chats-avatar-wrap"><img class="bento-chats-avatar" src="assets/bento/chat-avatar-itay.png?v=3" alt=""></span>
+                  <div class="bento-chats-main">
+                    <div class="bento-chats-head">
+                      <span class="bento-chats-name">Itay Rosen</span>
+                      <span class="bento-chats-badge">Active</span>
+                    </div>
+                    <p class="bento-chats-preview">Do you have a preferred time?</p>
+                  </div>
+                  <div class="bento-chats-meta">
+                    <time class="bento-chats-time">12:53 PM</time>
+                    <span class="bento-chats-count" data-count="2">2</span>
+                  </div>
+                </article>
+                <article class="bento-chats-row bento-chats-row-2 stroke">
+                  <span class="bento-chats-avatar-wrap"><img class="bento-chats-avatar" src="assets/bento/chat-avatar-dave.png?v=3" alt=""></span>
+                  <div class="bento-chats-main">
+                    <div class="bento-chats-head">
+                      <span class="bento-chats-name">Dave Trueman</span>
+                      <span class="bento-chats-badge">Active</span>
+                    </div>
+                    <p class="bento-chats-preview">typing...</p>
+                  </div>
+                  <div class="bento-chats-meta">
+                    <time class="bento-chats-time">10:23 AM</time>
+                  </div>
+                </article>
+                <article class="bento-chats-row bento-chats-row-3 stroke">
+                  <span class="bento-chats-avatar-wrap"><img class="bento-chats-avatar" src="assets/bento/chat-avatar-eitan.png?v=3" alt=""></span>
+                  <div class="bento-chats-main">
+                    <div class="bento-chats-head">
+                      <span class="bento-chats-name">Eitan Cohen</span>
+                      <span class="bento-chats-badge">Active</span>
+                    </div>
+                    <p class="bento-chats-preview">I would like to reschedule my appointment</p>
+                  </div>
+                  <div class="bento-chats-meta">
+                    <time class="bento-chats-time">10:23 AM</time>
+                    <span class="bento-chats-count" data-count="4">4</span>
+                  </div>
+                </article>
+                <article class="bento-chats-row bento-chats-row-4 stroke">
+                  <span class="bento-chats-avatar-wrap"><img class="bento-chats-avatar" src="assets/bento/chat-avatar-zara.png?v=3" alt=""></span>
+                  <div class="bento-chats-main">
+                    <div class="bento-chats-head">
+                      <span class="bento-chats-name">Zara Katzman</span>
+                      <span class="bento-chats-badge">Active</span>
+                    </div>
+                    <p class="bento-chats-preview">I would like to reschedule my appointment</p>
+                  </div>
+                  <div class="bento-chats-meta">
+                    <time class="bento-chats-time">10:23 AM</time>
+                    <span class="bento-chats-count" data-count="4">4</span>
+                  </div>
+                </article>
+              </div>
+              <div class="bento-chats-fade"></div>
+            </div>
+          </div>
+          <div class="card-copy">
+            <h3 data-i18n="benefits.card2.title">Intelligent Lead Scoring</h3>
+            <p data-i18n="benefits.card2.body">Automatically qualify and prioritize leads based on intent signals, so your sales team focuses on what matters.</p>
+          </div>
+        </article>
+      </div>
+      <article class="pc stroke">
+        <div class="pc-copy">
+          <div>
+            <h3 data-i18n="benefits.card3.title">Personalized Conversations</h3>
+            <p data-i18n="benefits.card3.body">Every interaction is tailored to each visitor's behavior, delivering the right message at exactly the right time.</p>
+          </div>
+          <a class="cta cta-secondary" href="#consult"><span class="cta-label" data-i18n="cta.requestDemo">Request a Demo</span></a>
+        </div>
+        <div class="card-media">
+          <div class="pc-shot">
+            <div class="media bento-lang" aria-hidden="true">
+              <div class="bento-lang-row">
+                <article class="bento-lang-pill bento-lang-pill-1 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-zh.svg" alt=""></span><span class="bento-lang-label">中文</span></article>
+                <article class="bento-lang-pill bento-lang-pill-2 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-ja.svg" alt=""></span><span class="bento-lang-label">日本語</span></article>
+                <article class="bento-lang-pill bento-lang-pill-3 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-ka.svg" alt=""></span><span class="bento-lang-label">ქართული</span></article>
+              </div>
+              <div class="bento-lang-row">
+                <article class="bento-lang-pill bento-lang-pill-4 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-ru.svg" alt=""></span><span class="bento-lang-label">Русский</span></article>
+                <article class="bento-lang-pill bento-lang-pill-5 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-de.svg" alt=""></span><span class="bento-lang-label">Deutsch</span></article>
+                <article class="bento-lang-pill bento-lang-pill-6 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-id.svg" alt=""></span><span class="bento-lang-label">Indonesia</span></article>
+              </div>
+              <div class="bento-lang-row bento-lang-row-wide">
+                <article class="bento-lang-pill bento-lang-pill-7 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-he.svg" alt=""></span><span class="bento-lang-label">עברית</span></article>
+                <article class="bento-lang-pill bento-lang-pill-8 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-ar.svg" alt=""></span><span class="bento-lang-label">العربية</span></article>
+                <article class="bento-lang-pill bento-lang-pill-9 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-ko.svg" alt=""></span><span class="bento-lang-label">한국어</span></article>
+              </div>
+              <div class="bento-lang-row">
+                <article class="bento-lang-pill bento-lang-pill-10 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-en.svg" alt=""></span><span class="bento-lang-label">English</span></article>
+                <article class="bento-lang-pill bento-lang-pill-11 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-uk.svg" alt=""></span><span class="bento-lang-label">Українська</span></article>
+                <article class="bento-lang-pill bento-lang-pill-12 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-pt.svg" alt=""></span><span class="bento-lang-label">Português</span></article>
+              </div>
+              <div class="bento-lang-row">
+                <article class="bento-lang-pill bento-lang-pill-13 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-fr.svg" alt=""></span><span class="bento-lang-label">Français</span></article>
+                <article class="bento-lang-pill bento-lang-pill-14 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-es.svg" alt=""></span><span class="bento-lang-label">Español</span></article>
+                <article class="bento-lang-pill bento-lang-pill-15 stroke"><span class="bento-lang-flag"><img src="assets/bento/flags/flag-it.svg" alt=""></span><span class="bento-lang-label">Italian</span></article>
+              </div>
+              <svg class="bento-lang-cursor" viewBox="0 0 18.645 23.921" fill="none" aria-hidden="true">
+                <path d="M.262.26 18.398 15.195H8.753l-5.299 8.477z" fill="#42ebc4" stroke="#fff" stroke-width="0.51"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="band wrap why-us">
+      <div class="intro">
+        <span class="eyebrow" data-i18n="eyebrow.why">Why Us</span>
+        <h2 data-i18n-html="why.title">Built different from the ground up<br>for teams that move fast</h2>
+        <p class="lede" data-i18n-html="why.lede">Here's why leading companies choose <strong>Felix Labs</strong> over the rest</p>
+      </div>
+      <ul class="why-grid">
+        <li class="why-item stroke">
+          <div class="side-rays-container" aria-hidden="true"></div>
+          <div class="why-art" aria-hidden="true"><div class="why-art-media why-art-lottie" data-lottie="assets/why-us/Card%20why%20us%20(2).json?v=1"></div></div>
+          <div class="why-item-copy">
+            <h3 data-i18n-html="why.s1.title">Autopilot Response Assistant</h3>
+            <p data-i18n-html="why.s1.body">Generate replies with one tap. Edit yourself or let AI refine the answer</p>
+          </div>
+        </li>
+        <li class="why-item stroke">
+          <div class="side-rays-container" aria-hidden="true"></div>
+          <div class="why-art" aria-hidden="true"><img class="why-art-media" src="assets/why-us/illustration-anywhere.svg" alt="" width="280" height="180"></div>
+          <div class="why-item-copy">
+            <h3 data-i18n-html="why.s2.title">Platform &amp; Mobile App</h3>
+            <p data-i18n-html="why.s2.body">Web and mobile stay in sync. Work from anywhere, on any device</p>
+          </div>
+        </li>
+        <li class="why-item stroke">
+          <div class="side-rays-container" aria-hidden="true"></div>
+          <div class="why-art" aria-hidden="true"><img class="why-art-media" src="assets/why-us/illustration-knowledge.svg" alt="" width="280" height="180"></div>
+          <div class="why-item-copy">
+            <h3 data-i18n-html="why.s3.title">Fast Knowledge Setup</h3>
+            <p data-i18n-html="why.s3.body">Launch in minutes. Add or swap data sources with up-to-date info</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="use-cases" class="band wrap use-cases">
+      <div class="intro">
+        <span class="eyebrow" data-i18n="eyebrow.use">Use Cases</span>
+        <h2 class="heading-grad" data-i18n="use.title">See how AI agents transform your customer pipeline</h2>
+        <p class="lede" data-i18n="use.lede">Real-world applications across industries driving measurable growth</p>
+      </div>
+      <ul class="use-list">
+        <li class="use">
+          <div class="use-copy">
+            <div class="use-copy-top">
+              <h3 data-i18n="use.support.title">Tech support teams resolve tickets faster without adding headcount</h3>
+              <p class="lede" data-i18n="use.support.body">AI agents answer common questions, walk users through fixes, and escalate when needed — cutting wait times and letting your team focus on complex issues.</p>
+            </div>
+            <div class="use-stats">
+              <div class="stat stroke"><span class="stat-value">-70%</span><span class="stat-label" data-i18n="use.support.s1">First Response Time</span></div>
+              <div class="stat stroke"><span class="stat-value">+45%</span><span class="stat-label" data-i18n="use.support.s2">Customer Satisfaction</span></div>
+            </div>
+          </div>
+          <figure class="use-shot stroke"><img class="media" src="Design%20Assets/Chat_mockup.png" alt="Tech support chat on a phone"></figure>
+        </li>
+        <li class="use">
+          <figure class="use-shot stroke"><img class="media" src="Screens/Chat%20Inbox.png" alt="Med practice inbox and scheduling"></figure>
+          <div class="use-copy">
+            <div class="use-copy-top">
+              <h3 data-i18n="use.med.title">Med practices rely on an AI secretary for bookings, sales, and patient records</h3>
+              <p class="lede" data-i18n="use.med.body">The bot closes inquiries, schedules appointments, launches follow-up campaigns, and maintains patient cards — handling front-desk work around the clock.</p>
+            </div>
+            <div class="use-stats">
+              <div class="stat stroke"><span class="stat-value">+38%</span><span class="stat-label" data-i18n="use.med.s1">Inquiry Conversion</span></div>
+              <div class="stat stroke"><span class="stat-value">2.5x</span><span class="stat-label" data-i18n="use.med.s2">Bookings Automated</span></div>
+            </div>
+          </div>
+        </li>
+        <li class="use">
+          <div class="use-copy">
+            <div class="use-copy-top">
+              <h3 data-i18n="use.hr.title">HR teams automate lead intake and route every candidate to the right stage</h3>
+              <p class="lede" data-i18n="use.hr.body">The bot qualifies applicants, assigns them to the right instance, tracks documents and statuses, and keeps every step moving — without manual handoffs.</p>
+            </div>
+            <div class="use-stats">
+              <div class="stat stroke"><span class="stat-value">3x</span><span class="stat-label" data-i18n="use.hr.s1">Lead Processing Speed</span></div>
+              <div class="stat stroke"><span class="stat-value">-55%</span><span class="stat-label" data-i18n="use.hr.s2">Manual Handoffs</span></div>
+            </div>
+          </div>
+          <figure class="use-shot stroke"><img class="media" src="Screens/Overview.png" alt="HR pipeline overview and candidate statuses"></figure>
+        </li>
+      </ul>
+    </section>
+
+    <div class="int-setup-stage">
+      <canvas class="stars" aria-hidden="true"></canvas>
+      <div class="int-glows" aria-hidden="true">
+        <div class="int-glow int-glow-a"></div>
+        <div class="int-glow int-glow-b"></div>
+        <div class="int-glow int-glow-c"></div>
+      </div>
+    <section id="integrations" class="band integrations-stage">
+      <div class="wrap">
+      <div class="intro">
+        <span class="eyebrow eyebrow-accent" data-i18n="eyebrow.int">Integrations</span>
+        <h2 class="heading-grad" data-i18n="int.title">Connects with tools your team already knows and loves</h2>
+        <p class="lede" data-i18n="int.lede">Seamless integrations with your existing CRM, helpdesk, and marketing stack</p>
+      </div>
+      <div class="logo-marquee">
+        <div class="logo-marquee-track">
+          <ul class="logo-row">
+            <li><span class="logo-tile stroke"><img src="assets/integrations/gemini.png" alt="Gemini"></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/instagram.svg" alt="Instagram"></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/calendar.svg" alt="Google Calendar"></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/code.png" alt="Code"></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/facebook.svg" alt="Facebook"></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/whatsapp.svg" alt="WhatsApp"></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/gmail.svg" alt="Gmail"></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/claude.svg" alt="Claude"></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/chatgpt.svg" alt="ChatGPT"></span></li>
+          </ul>
+          <ul class="logo-row" aria-hidden="true">
+            <li><span class="logo-tile stroke"><img src="assets/integrations/gemini.png" alt=""></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/instagram.svg" alt=""></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/calendar.svg" alt=""></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/code.png" alt=""></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/facebook.svg" alt=""></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/whatsapp.svg" alt=""></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/gmail.svg" alt=""></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/claude.svg" alt=""></span></li>
+            <li><span class="logo-tile stroke"><img src="assets/integrations/chatgpt.svg" alt=""></span></li>
+          </ul>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="band setup-stage">
+      <div class="setup-veil" aria-hidden="true"></div>
+      <div class="wrap">
+      <svg class="setup-ellipse" viewBox="0 0 1442 441" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="none">
+        <path d="M1441 440C1441 382.35 1422.38 325.264 1386.19 272.002C1350.01 218.74 1296.98 170.345 1230.12 129.58C1163.26 88.8152 1083.89 56.4787 996.532 34.4169C909.178 12.3551 815.552 0.999997 721 1C626.448 1 532.822 12.3551 445.468 34.4169C358.113 56.4787 278.741 88.8152 211.883 129.58C145.025 170.345 91.9901 218.74 55.8067 272.002C19.6233 325.264 0.999992 382.35 1 440V441H1441V440Z" fill="#010204"/>
+        <path class="setup-ellipse-stroke" d="M1441 440C1441 382.35 1422.38 325.264 1386.19 272.002C1350.01 218.74 1296.98 170.345 1230.12 129.58C1163.26 88.8152 1083.89 56.4787 996.532 34.4169C909.178 12.3551 815.552 0.999997 721 1C626.448 1 532.822 12.3551 445.468 34.4169C358.113 56.4787 278.741 88.8152 211.883 129.58C145.025 170.345 91.9901 218.74 55.8067 272.002C19.6233 325.264 0.999992 382.35 1 440" clip-path="url(#setup-ellipse-clip)"/>
+        <defs>
+          <clipPath id="setup-ellipse-clip">
+            <rect x="0" y="0" width="1442" height="300"/>
+          </clipPath>
+          <linearGradient id="setup-ellipse-grad" x1="0" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+            <stop stop-color="white" stop-opacity="0"/>
+            <stop offset="0.399875" stop-color="white" stop-opacity="0.2"/>
+            <stop offset="0.496534" stop-color="white"/>
+            <stop offset="0.604625" stop-color="white" stop-opacity="0.4"/>
+            <stop offset="1" stop-color="white" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="intro">
+        <span class="eyebrow" data-i18n="eyebrow.setup">Setup Workflow</span>
+        <h2 class="heading-grad" data-i18n="setup.title">Three simple steps from sign-up to your first AI conversation</h2>
+        <p class="lede" data-i18n="setup.lede">No coding required — our team handles the technical setup for you</p>
+      </div>
+      <div class="setup">
+        <figure class="setup-shot">
+          <img src="assets/setup/iphone.png" alt="Login screen on a phone">
+        </figure>
+        <div class="fold-list">
+          <details class="fold stroke">
+            <summary>
+              <span class="fold-label"><img class="fold-icon" src="assets/setup/icon-requirements.svg" alt=""> <span data-i18n="setup.s1.title">Share Your Requirements</span></span>
+              <span class="fold-toggle"><img src="assets/setup/chevron.svg" alt=""></span>
+            </summary>
+            <div class="fold-panel"><div class="fold-panel-inner">
+            <p class="lede" data-i18n="setup.s1.body">Tell us about your business goals, target audience, and current sales workflow — we'll design the perfect AI agent for you.</p>
+            </div></div>
+          </details>
+          <details class="fold stroke">
+            <summary>
+              <span class="fold-label"><img class="fold-icon" src="assets/setup/icon-build.svg" alt=""> <span data-i18n="setup.s2.title">We Build Your AI Agent</span></span>
+              <span class="fold-toggle"><img src="assets/setup/chevron.svg" alt=""></span>
+            </summary>
+            <div class="fold-panel"><div class="fold-panel-inner">
+            <p class="lede" data-i18n="setup.s2.body">We configure channels, knowledge, and tone so the agent matches how your team already sells.</p>
+            </div></div>
+          </details>
+          <details class="fold stroke">
+            <summary>
+              <span class="fold-label"><img class="fold-icon fold-icon-lg" src="assets/setup/icon-launch.svg" alt=""> <span data-i18n="setup.s3.title">Launch and Start Converting</span></span>
+              <span class="fold-toggle"><img src="assets/setup/chevron.svg" alt=""></span>
+            </summary>
+            <div class="fold-panel"><div class="fold-panel-inner">
+            <p class="lede" data-i18n="setup.s3.body">Go live, watch the inbox, and hand off only the conversations that need a human.</p>
+            </div></div>
+          </details>
+        </div>
+      </div>
+      </div>
+    </section>
+    </div>
+
+    <section id="consult" class="band wrap">
+      <div class="consult stroke">
+        <canvas class="stars" aria-hidden="true"></canvas>
+        <div class="consult-glows" aria-hidden="true">
+          <div class="consult-glow consult-glow-a"></div>
+          <div class="consult-glow consult-glow-b"></div>
+        </div>
+        <div class="intro intro-left">
+          <span class="eyebrow" data-i18n="eyebrow.start">Get Started</span>
+          <div>
+            <h2 data-i18n="consult.title">Book a free consultation</h2>
+            <p class="lede" data-i18n="consult.lede">Tell us about your goals and our team will craft a custom AI agent tailored to your business.</p>
+          </div>
+        </div>
+        <form id="consult-form">
+          <div class="fields">
+            <div class="field">
+              <label for="consult-name" data-i18n="form.name">Name</label>
+              <div class="field-box">
+                <img class="field-icon" src="assets/consult/icon-person.svg" alt="" width="24" height="24" aria-hidden="true">
+                <input id="consult-name" name="name" type="text" autocomplete="name" autocapitalize="words" spellcheck="false" placeholder="John Doe" data-i18n-placeholder="ph.name" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="consult-email" data-i18n="form.email">Email</label>
+              <div class="field-box">
+                <img class="field-icon" src="assets/consult/icon-mail.svg?v=4" alt="" width="24" height="24" aria-hidden="true">
+                <input id="consult-email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" placeholder="johndoe@mail.ai" data-i18n-placeholder="ph.email" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="consult-phone" data-i18n="form.phone">Phone Number</label>
+              <div class="field-box">
+                <img class="field-icon" src="assets/consult/icon-phone.svg" alt="" width="24" height="24" aria-hidden="true">
+                <input id="consult-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+1 555 000 0000" data-i18n-placeholder="ph.phone">
+              </div>
+            </div>
+          </div>
+          <button class="cta cta-secondary" type="submit"><span class="cta-label" data-i18n="form.submit">Submit</span></button>
+          <div class="consult-success" hidden role="status">
+            <div class="consult-success-mark" aria-hidden="true">
+              <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 11.5L8.5 16L18 6.5" stroke="#3c4886" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 tabindex="-1" data-i18n="form.successTitle">Request received</h3>
+            <p class="lede" data-i18n="form.successBody">We'll email you shortly to schedule your consultation.</p>
+            <button class="cta cta-ghost" type="button" data-consult-reset data-i18n="form.successReset">Send another request</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="reviews" class="band wrap">
+      <div class="intro reviews-intro">
+        <span class="eyebrow" data-i18n="eyebrow.reviews">Reviews</span>
+        <h2 class="heading-grad" data-i18n="reviews.title">Customer Reviews</h2>
+        <p class="lede" data-i18n="reviews.lede">What customers say after switching to Felix Labs</p>
+      </div>
+      <ul class="reviews">
+        <li class="quote">
+          <div class="quote-mark" aria-hidden="true"><img src="assets/reviews/quote.svg" alt="" width="80" height="80"></div>
+          <blockquote data-i18n-html="reviews.q1">Since switching to Felix Labs, our response time <em>dropped from 4 hours to under 30 seconds</em>. We closed 38% more deals in Q1 alone — the <em>ROI paid for itself</em> in the first week.</blockquote>
+          <div class="who">
+            <img class="avatar" src="assets/reviews/sarah.png" alt="" width="62" height="62">
+            <span class="name">Sarah Mitchell</span>
+            <span class="role" data-i18n="reviews.r1">VP of Sales, Arcline</span>
+          </div>
+          <div class="quote-logo"><img class="quote-logo-arcline" src="assets/reviews/logo-arcline.svg" alt="Arcline" width="108" height="65"></div>
+        </li>
+        <li class="quote">
+          <div class="quote-mark" aria-hidden="true"><img src="assets/reviews/quote.svg" alt="" width="80" height="80"></div>
+          <blockquote data-i18n-html="reviews.q2">We used to lose leads overnight. Now our <em>AI agent handles inquiries 24/7</em> and books qualified meetings directly <em>into our CRM</em>. Our pipeline has never been healthier.</blockquote>
+          <div class="who">
+            <img class="avatar" src="assets/reviews/james.png" alt="" width="62" height="62">
+            <span class="name">James Thornton</span>
+            <span class="role" data-i18n="reviews.r2">CEO, BrightPath</span>
+          </div>
+          <div class="quote-logo"><img class="quote-logo-brightpath" src="assets/reviews/logo-brightpath.svg" alt="BrightPath" width="152" height="65"></div>
+        </li>
+        <li class="quote">
+          <div class="quote-mark" aria-hidden="true"><img src="assets/reviews/quote.svg" alt="" width="80" height="80"></div>
+          <blockquote data-i18n-html="reviews.q3">The onboarding was effortless — we were live in under 10 minutes. Felix genuinely feels like adding a top-performing sales rep who <em>never takes a day off</em>.</blockquote>
+          <div class="who">
+            <img class="avatar" src="assets/reviews/tsahi-2.png" alt="" width="62" height="62">
+            <span class="name">Tsahi …</span>
+            <span class="role" data-i18n="reviews.r3">Head of Growth, Kaledo</span>
+          </div>
+          <div class="quote-logo quote-logo-ilgcc">
+            <img src="assets/reviews/logo-ilgcc.svg" alt="" width="41" height="41">
+            <span>ILGCC</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="about" class="band wrap">
+      <div class="faq-grid">
+        <div class="intro intro-left">
+          <span class="eyebrow" data-i18n="eyebrow.faq">FAQ</span>
+          <h2 class="heading-grad" data-i18n="faq.title">Frequently Asked Questions</h2>
+          <p class="lede" data-i18n="faq.lede">Everything you need to know about our AI agents and how they work</p>
+        </div>
+        <div class="fold-list faq-list">
+          <details class="fold stroke">
+            <summary>
+              <span class="fold-label" data-i18n="faq.q1">What industries do you specialize in?</span>
+              <span class="fold-toggle"><img src="assets/faq/chevron.svg" alt="" width="12" height="7"></span>
+            </summary>
+            <div class="fold-panel"><div class="fold-panel-inner">
+            <p class="lede" data-i18n="faq.a1">We serve e-commerce, SaaS, healthcare, real estate, and financial services — but our AI agents can be tailored to fit any industry with a customer-facing sales funnel.</p>
+            </div></div>
+          </details>
+          <details class="fold stroke">
+            <summary>
+              <span class="fold-label" data-i18n="faq.q2">How long does setup take?</span>
+              <span class="fold-toggle"><img src="assets/faq/chevron.svg" alt="" width="12" height="7"></span>
+            </summary>
+            <div class="fold-panel"><div class="fold-panel-inner">
+            <p class="lede" data-i18n="faq.a2">Most teams go live in under five minutes after sharing goals and channels. Complex stacks take a short onboarding call.</p>
+            </div></div>
+          </details>
+          <details class="fold stroke">
+            <summary>
+              <span class="fold-label" data-i18n="faq.q3">When will I start seeing results?</span>
+              <span class="fold-toggle"><img src="assets/faq/chevron.svg" alt="" width="12" height="7"></span>
+            </summary>
+            <div class="fold-panel"><div class="fold-panel-inner">
+            <p class="lede" data-i18n="faq.a3">Response time drops immediately. Conversion lift usually shows in the first weeks once the agent is live on your busiest channels.</p>
+            </div></div>
+          </details>
+          <details class="fold stroke">
+            <summary>
+              <span class="fold-label" data-i18n="faq.q4">Do I need any technical knowledge to get started?</span>
+              <span class="fold-toggle"><img src="assets/faq/chevron.svg" alt="" width="12" height="7"></span>
+            </summary>
+            <div class="fold-panel"><div class="fold-panel-inner">
+            <p class="lede" data-i18n="faq.a4">No. You describe the workflow; we handle setup. No engineering required.</p>
+            </div></div>
+          </details>
+          <details class="fold stroke">
+            <summary>
+              <span class="fold-label" data-i18n="faq.q5">Can the AI agent integrate with my existing CRM and tools?</span>
+              <span class="fold-toggle"><img src="assets/faq/chevron.svg" alt="" width="12" height="7"></span>
+            </summary>
+            <div class="fold-panel"><div class="fold-panel-inner">
+            <p class="lede" data-i18n="faq.a5">Yes — WhatsApp, Instagram, Facebook, Gmail, Calendar, and the major LLMs, plus CRM handoff for qualified meetings.</p>
+            </div></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo" class="band wrap">
+      <div class="demo">
+        <div class="demo-glow" aria-hidden="true">
+          <img src="assets/demo/ellipse-120.svg" alt="" width="1766" height="1464">
+        </div>
+        <div class="demo-copy">
+          <span class="eyebrow" data-i18n="eyebrow.demo">Demo</span>
+          <h2 data-i18n="demo.title">See Felix Labs in action — request a personalized live demo</h2>
+          <div class="demo-actions">
+            <a class="cta cta-primary" href="#consult" data-consult-open><span class="cta-label" data-i18n="cta.getStarted">Get Started Today</span><span class="cta-glass" aria-hidden="true"><span class="cta-orb"></span></span></a>
+            <a class="cta cta-secondary" href="#consult"><span class="cta-label" data-i18n="cta.requestDemo">Request a Demo</span></a>
+          </div>
+        </div>
+        <figure class="demo-shot">
+          <img class="media" src="Screens/Login.png" alt="Sign-in screen beside the dashboard" width="952" height="677">
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer wrap">
+    <div class="footer-top">
+      <div class="newsletter">
+        <h3 data-i18n="footer.nl">Join our newsletter</h3>
+        <form class="nl-bar" action="#" method="post">
+          <label class="sr-only" for="nl-email" data-i18n="form.email">Email</label>
+          <input id="nl-email" name="email" type="email" autocomplete="email" placeholder="johndoe@mail.ai" data-i18n-placeholder="ph.email">
+          <button class="cta cta-secondary" type="submit"><span class="cta-label" data-i18n="footer.signup">Sign Up</span></button>
+        </form>
+        <ul class="social">
+          <li><a class="stroke" href="#" aria-label="Instagram"><img src="assets/social/instagram.svg" alt="" width="31" height="31"></a></li>
+          <li><a class="stroke" href="#" aria-label="Facebook"><img src="assets/social/facebook.svg" alt="" width="31" height="31"></a></li>
+          <li><a class="stroke" href="#" aria-label="LinkedIn"><img src="assets/social/linkedin.svg" alt="" width="31" height="31"></a></li>
+          <li><a class="stroke" href="#" aria-label="Discord"><img src="assets/social/discord.svg" alt="" width="31" height="31"></a></li>
+        </ul>
+      </div>
+      <nav class="cols" aria-label="Footer" data-i18n-aria="footer.aria">
+        <div>
+          <h4 data-i18n="footer.contact">Contact &amp; About</h4>
+          <ul>
+            <li><a href="#consult" data-i18n="footer.contactLink">Contact</a></li>
+            <li><a href="#consult" data-i18n="footer.book">Book a demo</a></li>
+            <li><a href="#about" data-i18n="footer.about">About us</a></li>
+            <li><a href="#reviews" data-i18n="footer.reviews">Reviews</a></li>
+            <li><a href="#about" data-i18n="footer.team">Team</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.tech">Technical</h4>
+          <ul>
+            <li><a href="#" data-i18n="footer.notes">Release Notes</a></li>
+            <li><a href="#" data-i18n="footer.status">Service Status</a></li>
+            <li><a href="#" data-i18n="footer.sitemap">Sitemap</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.termsHead">Terms &amp; Conditions</h4>
+          <ul>
+            <li><a href="#" data-i18n="footer.terms">Terms &amp; Conditions</a></li>
+            <li><a href="#" data-i18n="footer.cookies">Cookie Policy</a></li>
+            <li><a href="#" data-i18n="footer.privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <p class="legal"><a href="https://mmdesign.eu/" target="_blank" rel="noopener noreferrer" data-i18n="footer.legal">Designed and developed by MMDesign</a></p>
+  </footer>
+
+  <dialog class="consult-dialog" id="consult-dialog" aria-labelledby="consult-dialog-title">
+    <div class="consult-dialog-card stroke">
+      <button class="consult-dialog-close" type="button" data-i18n-aria="close" aria-label="Close">&times;</button>
+      <div>
+        <h2 id="consult-dialog-title" data-i18n="consult.title">Book a free consultation</h2>
+        <p class="lede" data-i18n="consult.lede">Tell us about your goals and our team will craft a custom AI agent tailored to your business.</p>
+      </div>
+      <form id="consult-dialog-form">
+        <div class="fields">
+          <div class="field">
+            <label for="consult-dialog-name" data-i18n="form.name">Name</label>
+            <div class="field-box">
+              <img class="field-icon" src="assets/consult/icon-person.svg" alt="" width="24" height="24" aria-hidden="true">
+              <input id="consult-dialog-name" name="name" type="text" autocomplete="name" autocapitalize="words" spellcheck="false" placeholder="John Doe" data-i18n-placeholder="ph.name" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="consult-dialog-email" data-i18n="form.email">Email</label>
+            <div class="field-box">
+              <img class="field-icon" src="assets/consult/icon-mail.svg?v=4" alt="" width="24" height="24" aria-hidden="true">
+              <input id="consult-dialog-email" name="email" type="email" autocomplete="email" inputmode="email" spellcheck="false" placeholder="johndoe@mail.ai" data-i18n-placeholder="ph.email" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="consult-dialog-phone" data-i18n="form.phone">Phone Number</label>
+            <div class="field-box">
+              <img class="field-icon" src="assets/consult/icon-phone.svg" alt="" width="24" height="24" aria-hidden="true">
+              <input id="consult-dialog-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+1 555 000 0000" data-i18n-placeholder="ph.phone">
+            </div>
+          </div>
+        </div>
+        <button class="cta cta-secondary" type="submit"><span class="cta-label" data-i18n="form.submit">Submit</span></button>
+        <div class="consult-success" hidden role="status">
+          <div class="consult-success-mark" aria-hidden="true">
+            <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 11.5L8.5 16L18 6.5" stroke="#3c4886" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 tabindex="-1" data-i18n="form.successTitle">Request received</h3>
+          <p class="lede" data-i18n="form.successBody">We'll email you shortly to schedule your consultation.</p>
+          <button class="cta cta-ghost" type="button" data-consult-reset data-i18n="form.successReset">Send another request</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script type="module" src="assets/why-us/side-rays.js"></script>
+  <script>
+    (function () {
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var starScenes = [];
+      var starRaf = 0;
+      var starLooping = false;
+      function starLoop() {
+        if (!starLooping) return;
+        starScenes.forEach(function (scene) { scene.frame(true); });
+        starRaf = requestAnimationFrame(starLoop);
+      }
+      function startStarLoop() {
+        if (reduceMotion.matches || starLooping || document.hidden) return;
+        starLooping = true;
+        starRaf = requestAnimationFrame(starLoop);
+      }
+      function stopStarLoop() {
+        starLooping = false;
+        cancelAnimationFrame(starRaf);
+      }
+      var canvases = document.querySelectorAll("canvas.stars");
+      canvases.forEach(function (canvas) {
+        if (!canvas.getContext) return;
+        var ctx = canvas.getContext("2d");
+        var stars = [];
+        var lastW = 0;
+        var lastH = 0;
+        function spawnStar() {
+          var angle = Math.random() * Math.PI * 2;
+          var roll = Math.random();
+          var speed = roll < 0.5 ? Math.random() * 0.15 + 0.05 : roll < 0.85 ? Math.random() * 0.45 + 0.25 : Math.random() * 0.8 + 0.75;
+          return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            r: Math.random() < 0.2 ? Math.random() * 1.5 + 1.2 : Math.random() * 0.8 + 0.4,
+            baseAlpha: Math.random() * 0.45 + 0.15,
+            alpha: 0,
+            twinkleSpeed: Math.random() * 0.03 + 0.006,
+            twinklePhase: Math.random() * Math.PI * 2,
+            drift: Math.floor(Math.random() * 200)
+          };
+        }
+        function spawn() {
+          var n = Math.min(Math.floor((canvas.width * canvas.height) / 16000) + 25, 130);
+          stars = [];
+          for (var i = 0; i < n; i++) stars.push(spawnStar());
+        }
+        function updateStar(s) {
+          s.x += s.vx;
+          s.y += s.vy;
+          s.drift += 1;
+          if (s.drift > 200) {
+            s.drift = 0;
+            s.vx += (Math.random() - 0.5) * 0.12;
+            s.vy += (Math.random() - 0.5) * 0.12;
+          }
+          if (s.x < -10) s.x = canvas.width + 10;
+          if (s.x > canvas.width + 10) s.x = -10;
+          if (s.y < -10) s.y = canvas.height + 10;
+          if (s.y > canvas.height + 10) s.y = -10;
+          s.twinklePhase += s.twinkleSpeed;
+          s.alpha = s.baseAlpha + Math.sin(s.twinklePhase) * 0.18;
+          if (s.alpha < 0.04) s.alpha = 0.04;
+        }
+        function drawLinks() {
+          var maxDist = 110;
+          var i, j, dx, dy, dist, a;
+          for (i = 0; i < stars.length; i++) {
+            for (j = i + 1; j < stars.length; j++) {
+              dx = stars[i].x - stars[j].x;
+              dy = stars[i].y - stars[j].y;
+              dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist >= maxDist) continue;
+              a = (1 - dist / maxDist) * 0.12 * Math.min(stars[i].alpha, stars[j].alpha);
+              ctx.strokeStyle = "rgba(255, 255, 255, " + a + ")";
+              ctx.lineWidth = 0.8;
+              ctx.beginPath();
+              ctx.moveTo(stars[i].x, stars[i].y);
+              ctx.lineTo(stars[j].x, stars[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        function draw(moving) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          stars.forEach(function (s) {
+            if (moving) updateStar(s);
+            else {
+              s.alpha = s.baseAlpha;
+              if (s.alpha < 0.04) s.alpha = 0.04;
+            }
+            ctx.fillStyle = "rgba(255, 255, 255, " + s.alpha + ")";
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fill();
+          });
+          drawLinks();
+        }
+        function resize() {
+          var w = canvas.offsetWidth;
+          var h = canvas.offsetHeight;
+          canvas.width = w;
+          canvas.height = h;
+          if (!stars.length || w !== lastW || Math.abs(h - lastH) > 120) spawn();
+          lastW = w;
+          lastH = h;
+          draw(false);
+        }
+        resize();
+        window.addEventListener("resize", resize);
+        starScenes.push({
+          frame: function (moving) { draw(moving); }
+        });
+      });
+      startStarLoop();
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) stopStarLoop();
+        else startStarLoop();
+      });
+      reduceMotion.addEventListener("change", function () {
+        stopStarLoop();
+        starScenes.forEach(function (scene) { scene.frame(false); });
+        startStarLoop();
+      });
+
+      (function () {
+        var track = document.querySelector(".logo-marquee-track");
+        if (!track) return;
+        var row = track.querySelector(".logo-row");
+        if (!row) return;
+        function syncMarquee() {
+          track.style.setProperty("--marquee-shift", row.offsetWidth + "px");
+        }
+        syncMarquee();
+        window.addEventListener("resize", syncMarquee);
+      })();
+
+      (function () {
+        var root = document.querySelector(".stats-numbers");
+        if (!root) return;
+        var nodes = root.querySelectorAll(".stat-value");
+        if (!nodes.length) return;
+        function easeOut(t) {
+          if (t <= 0) return 0;
+          if (t >= 1) return 1;
+          var x = t;
+          for (var i = 0; i < 6; i++) {
+            var cx = 3 * 0.23;
+            var bx = 3 * (0.32 - 0.23) - cx;
+            var ax = 1 - cx - bx;
+            var d = ((ax * x + bx) * x + cx) * x - t;
+            var dx = (3 * ax * x + 2 * bx) * x + cx;
+            if (Math.abs(dx) < 1e-6) break;
+            x -= d / dx;
+          }
+          var cy = 3 * 1;
+          var by = 3 * (1 - 1) - cy;
+          var ay = 1 - cy - by;
+          return ((ay * x + by) * x + cy) * x;
+        }
+        function parseStat(text) {
+          var match = String(text).trim().match(/^([+\-]?)(\d+(?:\.\d+)?)(.*)$/);
+          if (!match) return null;
+          var suffix = match[3];
+          if (suffix && !/^(%|x|s|ms)$/i.test(suffix)) return null;
+          var decimals = match[2].indexOf(".") >= 0 ? match[2].split(".")[1].length : 0;
+          return { prefix: match[1], suffix: suffix, to: parseFloat(match[2]), decimals: decimals };
+        }
+        function formatStat(stat, value) {
+          var n = stat.decimals ? value.toFixed(stat.decimals) : String(Math.round(value));
+          return stat.prefix + n + stat.suffix;
+        }
+        var stats = [];
+        nodes.forEach(function (el) {
+          var parsed = parseStat(el.textContent);
+          if (!parsed) return;
+          el.setAttribute("aria-label", el.textContent.trim());
+          stats.push({ el: el, parsed: parsed });
+        });
+        if (!stats.length) return;
+        if (reduceMotion.matches) return;
+        stats.forEach(function (stat) {
+          stat.el.textContent = formatStat(stat.parsed, 0);
+        });
+        function play() {
+          var started = performance.now();
+          var duration = 1000;
+          var stagger = 60;
+          function frame(now) {
+            var done = true;
+            stats.forEach(function (stat, index) {
+              var t = (now - started - index * stagger) / duration;
+              if (t < 1) done = false;
+              var p = easeOut(Math.min(1, Math.max(0, t)));
+              stat.el.textContent = formatStat(stat.parsed, stat.parsed.to * p);
+            });
+            if (!done) requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+        }
+        if (!("IntersectionObserver" in window)) {
+          play();
+          return;
+        }
+        var seen = false;
+        var io = new IntersectionObserver(function (entries) {
+          if (seen || !entries[0] || !entries[0].isIntersecting) return;
+          seen = true;
+          io.disconnect();
+          play();
+        }, { threshold: 0.4 });
+        io.observe(root);
+      })();
+
+      (function () {
+        var video = document.querySelector(".hero-shot-media");
+        if (!video || video.tagName !== "VIDEO") return;
+        var fallbackSrc = "Screens/Overview%201.png";
+        var label = video.getAttribute("aria-label") || "Felix Labs overview dashboard";
+        function showFallback() {
+          var img = document.createElement("img");
+          img.className = "media hero-shot-media";
+          img.src = fallbackSrc;
+          img.alt = label;
+          video.replaceWith(img);
+        }
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          showFallback();
+          return;
+        }
+        video.loop = false;
+        video.addEventListener("ended", function () { video.pause(); });
+        video.addEventListener("error", showFallback);
+        function startPlayback() {
+          video.play().catch(showFallback);
+        }
+        if (video.readyState >= 2) startPlayback();
+        else video.addEventListener("loadeddata", startPlayback, { once: true });
+      })();
+
+      (function () {
+        var stage = document.querySelector(".hero-stage");
+        if (!stage) return;
+        function show() { stage.classList.add("is-inview"); }
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          show();
+          return;
+        }
+        requestAnimationFrame(function () {
+          requestAnimationFrame(show);
+        });
+      })();
+
+      (function () {
+        var section = document.querySelector(".benefits");
+        if (!section) return;
+        function show() { section.classList.add("is-inview"); }
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+          show();
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          if (!entries[0] || !entries[0].isIntersecting) return;
+          io.disconnect();
+          show();
+        }, { threshold: 0.08, rootMargin: "0px 0px -12% 0px" });
+        io.observe(section);
+      })();
+
+      (function () {
+        var root = document.querySelector(".bento-chats");
+        var section = document.querySelector(".benefits");
+        var cursor = root && root.querySelector(".bento-chats-cursor");
+        if (!root || !section || !cursor) return;
+        var kbSelect = root.querySelector(".bento-chats-kb-select");
+        var rows = [
+          root.querySelector(".bento-chats-row-1"),
+          root.querySelector(".bento-chats-row-2"),
+          root.querySelector(".bento-chats-row-3")
+        ].filter(Boolean);
+        var ease = "cubic-bezier(0.2, 0, 0, 1)";
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var running = false;
+
+        function wait(ms) {
+          return new Promise(function (resolve) { setTimeout(resolve, ms); });
+        }
+
+        function pointInRoot(el, xRatio, yRatio) {
+          var er = el.getBoundingClientRect();
+          var br = root.getBoundingClientRect();
+          return {
+            x: er.left - br.left + er.width * xRatio,
+            y: er.top - br.top + er.height * yRatio
+          };
+        }
+
+        function getEntry() {
+          var bounds = root.getBoundingClientRect();
+          return { x: bounds.width * 0.9, y: bounds.height * 0.1 };
+        }
+
+        function setCursor(el, point) {
+          el.style.transform = "translate(" + point.x + "px, " + point.y + "px)";
+        }
+
+        function clearCursorFx() {
+          cursor.getAnimations().forEach(function (anim) { anim.cancel(); });
+        }
+
+        function parkCursor(point) {
+          clearCursorFx();
+          cursor.style.opacity = "0";
+          setCursor(cursor, point);
+        }
+
+        function revealCursor() {
+          clearCursorFx();
+          cursor.style.opacity = "";
+        }
+
+        function moveCursor(el, from, to, duration) {
+          setCursor(el, from);
+          return el.animate([
+            { transform: "translate(" + from.x + "px, " + from.y + "px)" },
+            { transform: "translate(" + to.x + "px, " + to.y + "px)" }
+          ], { duration: duration, easing: ease, fill: "forwards" }).finished;
+        }
+
+        function resetDemo() {
+          root.classList.remove("is-kb-open");
+          rows.forEach(function (row) {
+            row.classList.remove("is-selected", "is-hovered");
+          });
+        }
+
+        function showStatic() {
+          root.classList.add("is-demo-running", "is-kb-open");
+          if (rows[1]) rows[1].classList.add("is-selected");
+          if (kbSelect) setCursor(cursor, pointInRoot(kbSelect, 0.72, 0.5));
+          cursor.style.opacity = "1";
+        }
+
+        async function runDemo() {
+          if (running) return;
+          running = true;
+          root.classList.add("is-demo-running");
+
+          while (running) {
+            resetDemo();
+            var entry = getEntry();
+            parkCursor(entry);
+            revealCursor();
+            await wait(500);
+
+            var row1 = pointInRoot(rows[0], 0.58, 0.55);
+            rows[0].classList.add("is-hovered");
+            await moveCursor(cursor, entry, row1, 850);
+            await wait(320);
+            rows[0].classList.remove("is-hovered");
+
+            var row2 = pointInRoot(rows[1], 0.58, 0.55);
+            rows[1].classList.add("is-hovered");
+            await moveCursor(cursor, row1, row2, 720);
+            await wait(180);
+            rows[1].classList.remove("is-hovered");
+
+            setCursor(cursor, row2);
+            await cursor.animate([
+              { transform: "translate(" + row2.x + "px, " + row2.y + "px) scale(1)" },
+              { transform: "translate(" + row2.x + "px, " + row2.y + "px) scale(0.84)" },
+              { transform: "translate(" + row2.x + "px, " + row2.y + "px) scale(1)" }
+            ], { duration: 260, easing: "ease-out", fill: "forwards" }).finished;
+            rows[1].classList.add("is-selected");
+            root.classList.add("is-kb-open");
+
+            await wait(420);
+            var kbPoint = pointInRoot(kbSelect, 0.72, 0.5);
+            await moveCursor(cursor, row2, kbPoint, 650);
+
+            await wait(3200);
+            await cursor.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 280, fill: "forwards" }).finished;
+            parkCursor(getEntry());
+            await wait(700);
+          }
+        }
+
+        function start() {
+          if (reduce) {
+            showStatic();
+            return;
+          }
+          setTimeout(runDemo, 1100);
+        }
+
+        if (section.classList.contains("is-inview")) start();
+        else {
+          var obs = new MutationObserver(function () {
+            if (!section.classList.contains("is-inview")) return;
+            obs.disconnect();
+            start();
+          });
+          obs.observe(section, { attributes: true, attributeFilter: ["class"] });
+        }
+      })();
+
+      (function () {
+        var root = document.querySelector(".bento-lang");
+        var section = document.querySelector(".benefits");
+        var cursor = root && root.querySelector(".bento-lang-cursor");
+        if (!root || !section || !cursor) return;
+        var pills = Array.prototype.slice.call(root.querySelectorAll(".bento-lang-pill"));
+        if (!pills.length) return;
+        var ease = "cubic-bezier(0.22, 1, 0.36, 1)";
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var running = false;
+        var lastPill = null;
+
+        function wait(ms) {
+          return new Promise(function (resolve) { setTimeout(resolve, ms); });
+        }
+
+        function pointInRoot(el, xRatio, yRatio) {
+          var er = el.getBoundingClientRect();
+          var br = root.getBoundingClientRect();
+          return {
+            x: er.left - br.left + er.width * xRatio,
+            y: er.top - br.top + er.height * yRatio
+          };
+        }
+
+        function setCursor(el, point) {
+          el.style.transform = "translate(" + point.x + "px, " + point.y + "px)";
+        }
+
+        function clearCursorFx() {
+          cursor.getAnimations().forEach(function (anim) { anim.cancel(); });
+        }
+
+        function moveCursor(from, to, duration) {
+          setCursor(cursor, from);
+          return cursor.animate([
+            { transform: "translate(" + from.x + "px, " + from.y + "px)" },
+            { transform: "translate(" + to.x + "px, " + to.y + "px)" }
+          ], { duration: duration, easing: ease, fill: "forwards" }).finished;
+        }
+
+        function pickPills(count) {
+          var pool = pills.filter(function (pill) { return pill !== lastPill; });
+          var i, j, tmp;
+          for (i = pool.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            tmp = pool[i];
+            pool[i] = pool[j];
+            pool[j] = tmp;
+          }
+          return pool.slice(0, count);
+        }
+
+        function travelMs(from, to) {
+          var dx = to.x - from.x;
+          var dy = to.y - from.y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          return Math.round(Math.min(920, Math.max(520, dist * 1.1)));
+        }
+
+        async function runDemo() {
+          if (running) return;
+          running = true;
+          root.classList.add("is-demo-running");
+          var from = { x: root.clientWidth * 0.92, y: root.clientHeight * 0.18 };
+          setCursor(cursor, from);
+          cursor.style.opacity = "0";
+
+          while (running) {
+            var targets = pickPills(3 + Math.floor(Math.random() * 3));
+            if (!targets.length) break;
+            await cursor.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: ease, fill: "forwards" }).finished;
+            await wait(280);
+
+            var i, pill, to;
+            for (i = 0; i < targets.length; i++) {
+              pill = targets[i];
+              to = pointInRoot(pill, 0.28, 0.55);
+              pills.forEach(function (item) { item.classList.remove("is-hovered"); });
+              await moveCursor(from, to, travelMs(from, to));
+              pill.classList.add("is-hovered");
+              lastPill = pill;
+              from = to;
+              await wait(360 + Math.floor(Math.random() * 220));
+            }
+
+            pills.forEach(function (item) { item.classList.remove("is-hovered"); });
+            await cursor.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 320, easing: ease, fill: "forwards" }).finished;
+            from = { x: root.clientWidth * (0.78 + Math.random() * 0.16), y: root.clientHeight * (0.12 + Math.random() * 0.2) };
+            setCursor(cursor, from);
+            clearCursorFx();
+            cursor.style.opacity = "0";
+            await wait(800 + Math.floor(Math.random() * 500));
+          }
+        }
+
+        function start() {
+          if (reduce) return;
+          setTimeout(runDemo, 1400);
+        }
+
+        if (section.classList.contains("is-inview")) start();
+        else {
+          var obs = new MutationObserver(function () {
+            if (!section.classList.contains("is-inview")) return;
+            obs.disconnect();
+            start();
+          });
+          obs.observe(section, { attributes: true, attributeFilter: ["class"] });
+        }
+      })();
+
+      (function () {
+        var section = document.querySelector(".why-us");
+        var containers = document.querySelectorAll(".why-art-lottie");
+        if (!section || !containers.length || typeof lottie === "undefined") return;
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var animations = [];
+        containers.forEach(function (container) {
+          var lottieSrc = container.getAttribute("data-lottie");
+          if (!lottieSrc) return;
+          animations.push(lottie.loadAnimation({
+            container: container,
+            renderer: "svg",
+            loop: true,
+            autoplay: false,
+            path: lottieSrc
+          }));
+        });
+        if (!animations.length) return;
+        function setPlayback(shouldPlay) {
+          animations.forEach(function (anim) {
+            if (shouldPlay) anim.play();
+            else anim.pause();
+          });
+        }
+        if (reduceMotion.matches) return;
+        if (!("IntersectionObserver" in window)) {
+          setPlayback(true);
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          setPlayback(entries[0] && entries[0].isIntersecting);
+        }, { threshold: 0.15 });
+        io.observe(section);
+      })();
+
+      var links = document.querySelectorAll(".main-nav ul a");
+      var header = document.querySelector(".site-header");
+      var headerPad = document.querySelector(".site-header-pad");
+      var navToggle = document.getElementById("nav-toggle");
+      var navMq = window.matchMedia("(max-width: 1100px)");
+      function updateHeaderScroll() {
+        if (!header) return;
+        var scrolled = window.scrollY > 20;
+        header.classList.toggle("is-scrolled", scrolled);
+        if (headerPad) headerPad.style.height = scrolled ? header.offsetHeight + "px" : "0px";
+      }
+      updateHeaderScroll();
+      window.addEventListener("scroll", updateHeaderScroll, { passive: true });
+      window.addEventListener("resize", updateHeaderScroll);
+      function setNavOpen(open) {
+        if (!header || !navToggle) return;
+        if (!navMq.matches) open = false;
+        header.classList.toggle("is-nav-open", open);
+        document.body.classList.toggle("is-nav-open", open);
+        document.body.style.overflow = open ? "hidden" : "";
+        navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        var dict = (typeof I18N !== "undefined" && (I18N[document.documentElement.lang] || I18N.en)) || null;
+        if (dict) navToggle.setAttribute("aria-label", dict[open ? "nav.close" : "nav.menu"]);
+      }
+      links.forEach(function (link) {
+        link.addEventListener("click", function () {
+          links.forEach(function (item) { item.classList.remove("is-active"); });
+          link.classList.add("is-active");
+          setNavOpen(false);
+        });
+      });
+      var navCta = document.querySelector(".nav-extra .cta");
+      if (navCta) navCta.addEventListener("click", function () { setNavOpen(false); });
+      if (navToggle) {
+        navToggle.addEventListener("click", function (event) {
+          event.stopPropagation();
+          setNavOpen(!header.classList.contains("is-nav-open"));
+        });
+        var logo = document.querySelector(".logo");
+        if (logo) logo.addEventListener("click", function () { setNavOpen(false); });
+        document.addEventListener("click", function (event) {
+          if (!header.contains(event.target)) setNavOpen(false);
+        });
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") setNavOpen(false);
+        });
+        navMq.addEventListener("change", function () { setNavOpen(false); });
+      }
+      function bindConsultForm(form, firstFieldId) {
+        if (!form) return;
+        var success = form.querySelector(".consult-success");
+        var title = form.querySelector(".consult-success h3");
+        var reset = form.querySelector("[data-consult-reset]");
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          if (!form.reportValidity()) return;
+          form.classList.add("is-sent");
+          if (success) success.hidden = false;
+          if (title) title.focus();
+        });
+        if (reset) {
+          reset.addEventListener("click", function () {
+            form.classList.remove("is-sent");
+            if (success) success.hidden = true;
+            form.reset();
+            var first = document.getElementById(firstFieldId);
+            if (first) first.focus();
+          });
+        }
+      }
+      bindConsultForm(document.getElementById("consult-form"), "consult-name");
+      bindConsultForm(document.getElementById("consult-dialog-form"), "consult-dialog-name");
+
+      var consultDialog = document.getElementById("consult-dialog");
+      if (consultDialog) {
+        document.querySelectorAll("[data-consult-open]").forEach(function (opener) {
+          opener.addEventListener("click", function (event) {
+            event.preventDefault();
+            consultDialog.showModal();
+          });
+        });
+        consultDialog.querySelector(".consult-dialog-close").addEventListener("click", function () {
+          consultDialog.close();
+        });
+        consultDialog.addEventListener("click", function (event) {
+          if (event.target === consultDialog) consultDialog.close();
+        });
+      }
+
+      var I18N = {
+        en: {
+          "nav.home": "Home",
+          "nav.useCases": "Use Cases",
+          "nav.integrations": "Integrations",
+          "nav.about": "About Us",
+          "nav.menu": "Menu",
+          "nav.close": "Close menu",
+          "cta.tryItOut": "Try it out",
+          "cta.getStarted": "Get Started Today",
+          "cta.requestDemo": "Request a Demo",
+          "hero.title": "Launch your AI sales agent in 5 minutes and double your conversion rate",
+          "hero.sub": "Responds to your clients 24/7, never loses a single lead, and drives conversions to your target rate — all on autopilot.",
+          "stats.aria": "Results",
+          "stats.title": "Proven results that speak for themselves across every industry we serve",
+          "stats.lede": "Real metrics from our clients after implementing AI-powered agents",
+          "stats.conversion": "Conversion",
+          "stats.time": "First reply",
+          "stats.roi": "Availability",
+          "eyebrow.benefits": "Benefits",
+          "benefits.title": "Everything you need to turn<br>leads into loyal customers",
+          "benefits.lede": "Our AI agents handle the heavy lifting so your team can focus on closing",
+          "benefits.card1.title": "Always-On Engagement",
+          "benefits.card1.body": "Your AI agent replies instantly at any hour, so no lead is lost while you sleep.",
+          "benefits.card2.title": "Intelligent Lead Scoring",
+          "benefits.card2.body": "Automatically qualify and prioritize leads based on intent signals, so your sales team focuses on what matters.",
+          "benefits.card3.title": "Personalized Conversations",
+          "benefits.card3.body": "Every interaction is tailored to each visitor's behavior, delivering the right message at exactly the right time.",
+          "eyebrow.why": "Why Us",
+          "why.title": "Built different from the ground up<br>for teams that move fast",
+          "why.lede": "Here's why leading companies choose <strong>Felix Labs</strong> over the rest",
+          "why.s1.title": "Autopilot Response Assistant",
+          "why.s1.body": "Generate replies with one tap. Edit yourself or let AI refine the answer",
+          "why.s2.title": "Platform & Mobile App",
+          "why.s2.body": "Web and mobile stay in sync. Work from anywhere, on any device",
+          "why.s3.title": "Fast Knowledge Setup",
+          "why.s3.body": "Launch in minutes. Add or swap data sources with up-to-date info",
+          "why.s4.title": "Multi-Language Support",
+          "why.s4.body": "Supports 40+ languages. Auto-detects visitor locale",
+          "eyebrow.use": "Use Cases",
+          "use.title": "See how AI agents transform your customer pipeline",
+          "use.lede": "Real-world applications across industries driving measurable growth",
+          "use.support.title": "Tech support teams resolve tickets faster without adding headcount",
+          "use.support.body": "AI agents answer common questions, walk users through fixes, and escalate when needed — cutting wait times and letting your team focus on complex issues.",
+          "use.support.s1": "First Response Time",
+          "use.support.s2": "Customer Satisfaction",
+          "use.med.title": "Med practices rely on an AI secretary for bookings, sales, and patient records",
+          "use.med.body": "The bot closes inquiries, schedules appointments, launches follow-up campaigns, and maintains patient cards — handling front-desk work around the clock.",
+          "use.med.s1": "Inquiry Conversion",
+          "use.med.s2": "Bookings Automated",
+          "use.hr.title": "HR teams automate lead intake and route every candidate to the right stage",
+          "use.hr.body": "The bot qualifies applicants, assigns them to the right instance, tracks documents and statuses, and keeps every step moving — without manual handoffs.",
+          "use.hr.s1": "Lead Processing Speed",
+          "use.hr.s2": "Manual Handoffs",
+          "eyebrow.int": "Integrations",
+          "int.title": "Connects with tools your team already knows and loves",
+          "int.lede": "Seamless integrations with your existing CRM, helpdesk, and marketing stack",
+          "eyebrow.setup": "Setup Workflow",
+          "setup.title": "Three simple steps from sign-up to your first AI conversation",
+          "setup.lede": "No coding required — our team handles the technical setup for you",
+          "setup.s1.title": "Share Your Requirements",
+          "setup.s1.body": "Tell us about your business goals, target audience, and current sales workflow — we'll design the perfect AI agent for you.",
+          "setup.s2.title": "We Build Your AI Agent",
+          "setup.s2.body": "We configure channels, knowledge, and tone so the agent matches how your team already sells.",
+          "setup.s3.title": "Launch and Start Converting",
+          "setup.s3.body": "Go live, watch the inbox, and hand off only the conversations that need a human.",
+          "eyebrow.start": "Get Started",
+          "consult.title": "Book a free consultation",
+          "consult.lede": "Tell us about your goals and our team will craft a custom AI agent tailored to your business.",
+          "form.name": "Name",
+          "form.email": "Email",
+          "form.phone": "Phone Number",
+          "form.message": "Message",
+          "ph.name": "John Doe",
+          "ph.email": "johndoe@mail.ai",
+          "ph.phone": "+1 555 000 0000",
+          "ph.message": "Tell us about your company",
+          "form.submit": "Submit",
+          "form.successTitle": "Request received",
+          "form.successBody": "We'll email you shortly to schedule your consultation.",
+          "form.successReset": "Send another request",
+          "eyebrow.reviews": "Reviews",
+          "reviews.title": "Customer Reviews",
+          "reviews.lede": "What customers say after switching to Felix Labs",
+          "reviews.q1": "Since switching to Felix Labs, our response time <em>dropped from 4 hours to under 30 seconds</em>. We closed 38% more deals in Q1 alone — the <em>ROI paid for itself</em> in the first week.",
+          "reviews.r1": "VP of Sales, Arcline",
+          "reviews.q2": "We used to lose leads overnight. Now our <em>AI agent handles inquiries 24/7</em> and books qualified meetings directly <em>into our CRM</em>. Our pipeline has never been healthier.",
+          "reviews.r2": "CEO, BrightPath",
+          "reviews.q3": "The onboarding was effortless — we were live in under 10 minutes. Felix genuinely feels like adding a top-performing sales rep who <em>never takes a day off</em>.",
+          "reviews.r3": "Head of Growth, Kaledo",
+          "eyebrow.faq": "FAQ",
+          "faq.title": "Frequently Asked Questions",
+          "faq.lede": "Everything you need to know about our AI agents and how they work",
+          "faq.q1": "What industries do you specialize in?",
+          "faq.a1": "We serve e-commerce, SaaS, healthcare, real estate, and financial services — but our AI agents can be tailored to fit any industry with a customer-facing sales funnel.",
+          "faq.q2": "How long does setup take?",
+          "faq.a2": "Most teams go live in under five minutes after sharing goals and channels. Complex stacks take a short onboarding call.",
+          "faq.q3": "When will I start seeing results?",
+          "faq.a3": "Response time drops immediately. Conversion lift usually shows in the first weeks once the agent is live on your busiest channels.",
+          "faq.q4": "Do I need any technical knowledge to get started?",
+          "faq.a4": "No. You describe the workflow; we handle setup. No engineering required.",
+          "faq.q5": "Can the AI agent integrate with my existing CRM and tools?",
+          "faq.a5": "Yes — WhatsApp, Instagram, Facebook, Gmail, Calendar, and the major LLMs, plus CRM handoff for qualified meetings.",
+          "eyebrow.demo": "Demo",
+          "demo.title": "See Felix Labs in action — request a personalized live demo",
+          "footer.nl": "Join our newsletter",
+          "footer.signup": "Sign Up",
+          "footer.contact": "Contact & About",
+          "footer.contactLink": "Contact",
+          "footer.book": "Book a demo",
+          "footer.about": "About us",
+          "footer.reviews": "Reviews",
+          "footer.team": "Team",
+          "footer.tech": "Technical",
+          "footer.notes": "Release Notes",
+          "footer.status": "Service Status",
+          "footer.sitemap": "Sitemap",
+          "footer.termsHead": "Terms & Conditions",
+          "footer.terms": "Terms & Conditions",
+          "footer.cookies": "Cookie Policy",
+          "footer.privacy": "Privacy Policy",
+          "footer.legal": "Designed and developed by MMDesign",
+          "footer.aria": "Footer",
+          "lang.group": "Language",
+          "lang.en": "English",
+          "lang.he": "Hebrew",
+          "close": "Close"
+        },
+        he: {
+          "nav.home": "בית",
+          "nav.useCases": "מקרי שימוש",
+          "nav.integrations": "אינטגרציות",
+          "nav.about": "עלינו",
+          "nav.menu": "תפריט",
+          "nav.close": "סגירת תפריט",
+          "cta.tryItOut": "נסו אותנו",
+          "cta.getStarted": "מתחילים היום",
+          "cta.requestDemo": "בקשת הדגמה",
+          "hero.title": "השיקו סוכן מכירות AI תוך 5 דקות והכפילו את שיעור ההמרה",
+          "hero.sub": "עונה ללקוחות 24/7, לא מפספס ליד אחד, ומביא המרות ליעד — אוטומטית.",
+          "stats.aria": "תוצאות",
+          "stats.title": "תוצאות מוכחות שמדברות בעד עצמן בכל תעשייה שאנחנו מלווים",
+          "stats.lede": "מדדים אמיתיים מלקוחות אחרי הטמעת סוכני AI",
+          "stats.conversion": "המרות",
+          "stats.time": "תגובה ראשונה",
+          "stats.roi": "זמינות",
+          "eyebrow.benefits": "יתרונות",
+          "benefits.title": "כל מה שצריך כדי להפוך<br>לידים ללקוחות נאמנים",
+          "benefits.lede": "סוכני ה-AI שלנו עושים את העבודה הקשה — הצוות שלכם מתמקד בסגירה",
+          "benefits.card1.title": "זמינות מלאה",
+          "benefits.card1.body": "הסוכן עונה מיד בכל שעה — אף ליד לא נעלם בזמן שאתם ישנים.",
+          "benefits.card2.title": "ניקוד לידים חכם",
+          "benefits.card2.body": "סינון ותעדוף אוטומטי לפי כוונת רכישה — צוות המכירות מתמקד במה שחשוב.",
+          "benefits.card3.title": "שיחות מותאמות אישית",
+          "benefits.card3.body": "כל אינטראקציה מותאמת להתנהגות המבקר, עם המסר הנכון בדיוק בזמן הנכון.",
+          "eyebrow.why": "למה אנחנו",
+          "why.title": "בנוי אחרת מהיסוד<br>לצוותים שזזים מהר",
+          "why.lede": "למה חברות מובילות בוחרות ב-<strong>Felix Labs</strong>",
+          "why.s1.title": "אסיסטנט תשובות אוטומטי",
+          "why.s1.body": "יצירת תשובות בלחיצה. ערכו בעצמכם או תנו ל-AI לשפר",
+          "why.s2.title": "פלטפורמה ואפליקציה",
+          "why.s2.body": "אינטרנט ומובייל מסונכרנים. עבדו מכל מקום, מכל מכשיר",
+          "why.s3.title": "הקמה מהירה של בסיס ידע",
+          "why.s3.body": "עולים לאוויר תוך דקות. מוסיפים או מחליפים מקורות עם מידע עדכני",
+          "why.s4.title": "תמיכה רב-לשונית",
+          "why.s4.body": "יותר מ-40 שפות. זיהוי אוטומטי של שפת המבקר",
+          "eyebrow.use": "מקרי שימוש",
+          "use.title": "איך סוכני AI משנים את צינור הלקוחות",
+          "use.lede": "יישומים אמיתיים בענפים שונים עם צמיחה מדידה",
+          "use.support.title": "צוותי תמיכה טכנית סוגרים פניות מהר יותר בלי להגדיל כוח אדם",
+          "use.support.body": "סוכני AI עונים על שאלות נפוצות, מלווים בתיקונים ומעבירים לנציג כשצריך — מקצרים זמני המתנה ומשאירים את הצוות לבעיות מורכבות.",
+          "use.support.s1": "זמן תגובה ראשון",
+          "use.support.s2": "שביעות רצון לקוחות",
+          "use.med.title": "מרפאות נשענות על מזכירה AI לתורים, מכירות ותיקי מטופלים",
+          "use.med.body": "הבוט סוגר פניות, קובע תורים, מפעיל קמפיינים להמשך טיפול ומנהל כרטיסי מטופלים — עבודת קבלה מסביב לשעון.",
+          "use.med.s1": "המרת פניות",
+          "use.med.s2": "תורים אוטומטיים",
+          "use.hr.title": "צוותי HR ממיינים לידים ומנתבים כל מועמד לשלב הנכון",
+          "use.hr.body": "הבוט מסנן מועמדים, משייך לאינסטנס המתאים, עוקב אחר מסמכים וסטטוסים ומקדם כל שלב — בלי העברות ידניות.",
+          "use.hr.s1": "מהירות עיבוד לידים",
+          "use.hr.s2": "העברות ידניות",
+          "eyebrow.int": "אינטגרציות",
+          "int.title": "מתחבר לכלים שהצוות כבר מכיר ואוהב",
+          "int.lede": "אינטגרציות חלקות ל-CRM, לדסק ולסטאק השיווקי",
+          "eyebrow.setup": "תהליך הקמה",
+          "setup.title": "שלושה שלבים פשוטים מהרשמה לשיחת AI ראשונה",
+          "setup.lede": "בלי קוד — אנחנו מטפלים בהקמה הטכנית",
+          "setup.s1.title": "משתפים דרישות",
+          "setup.s1.body": "ספרו על היעדים, הקהל ותהליך המכירה — נתכנן את הסוכן המתאים.",
+          "setup.s2.title": "אנחנו בונים את הסוכן",
+          "setup.s2.body": "מגדירים ערוצים, ידע וטון כדי שהסוכן ימכור כמו הצוות שלכם.",
+          "setup.s3.title": "משגרים ומתחילים להמיר",
+          "setup.s3.body": "יוצאים לאוויר, עוקבים אחרי תיבת הדואר, ומעבירים לבן אדם רק את השיחות שצריך.",
+          "eyebrow.start": "מתחילים",
+          "consult.title": "קובעים ייעוץ חינם",
+          "consult.lede": "ספרו על היעדים — נבנה סוכן AI מותאם לעסק שלכם.",
+          "form.name": "שם",
+          "form.email": "אימייל",
+          "form.phone": "מספר טלפון",
+          "form.message": "הודעה",
+          "ph.name": "ישראל ישראלי",
+          "ph.email": "israel@mail.ai",
+          "ph.phone": "050-000-0000",
+          "ph.message": "ספרו לנו על החברה",
+          "form.submit": "שליחה",
+          "form.successTitle": "הבקשה התקבלה",
+          "form.successBody": "ניצור קשר במייל בקרוב לקביעת הייעוץ.",
+          "form.successReset": "שליחת בקשה נוספת",
+          "eyebrow.reviews": "ביקורות",
+          "reviews.title": "ביקורות לקוחות",
+          "reviews.lede": "מה לקוחות אומרים אחרי המעבר ל-Felix Labs",
+          "reviews.q1": "מאז המעבר ל-Felix Labs, זמן התגובה <em>ירד מ-4 שעות לפחות מ-30 שניות</em>. סגרנו 38% יותר עסקאות ברבעון הראשון — ה-<em>ROI החזיר את עצמו</em> בשבוע הראשון.",
+          "reviews.r1": "סמנכ״ל מכירות, Arcline",
+          "reviews.q2": "פעם איבדנו לידים בלילה. עכשיו <em>הסוכן מטפל בפניות 24/7</em> וקובע פגישות מסוננות <em>ישירות ל-CRM</em>. הצינור מעולם לא היה בריא יותר.",
+          "reviews.r3": "ראש צמיחה, Kaledo",
+          "reviews.r2": "מנכ״ל, BrightPath",
+          "reviews.q3": "האונבורדינג היה קל — עלינו לאוויר בפחות מ-10 דקות. Felix מרגיש כמו נציג מכירות מצטיין <em>שלא לוקח יום חופש</em>.",
+          "eyebrow.faq": "שאלות נפוצות",
+          "faq.title": "שאלות נפוצות",
+          "faq.lede": "כל מה שצריך לדעת על סוכני ה-AI ואיך הם עובדים",
+          "faq.q1": "באילו תעשיות אתם מתמחים?",
+          "faq.a1": "אי-קומרס, SaaS, בריאות, נדל״ן ושירותים פיננסיים — אבל אפשר להתאים את הסוכן לכל משפך מכירות מול לקוחות.",
+          "faq.q2": "כמה זמן לוקחת ההקמה?",
+          "faq.a2": "רוב הצוותים עולים לאוויר בפחות מחמש דקות אחרי שמגדירים יעדים וערוצים. סטאקים מורכבים — שיחת אונבורדינג קצרה.",
+          "faq.q3": "מתי מתחילים לראות תוצאות?",
+          "faq.a3": "זמן התגובה יורד מיד. עלייה בהמרות בדרך כלל בשבועות הראשונים, כשהסוכן חי בערוצים העמוסים.",
+          "faq.q4": "צריך ידע טכני כדי להתחיל?",
+          "faq.a4": "לא. אתם מתארים את התהליך — אנחנו מטפלים בהקמה. בלי פיתוח.",
+          "faq.q5": "אפשר לחבר את הסוכן ל-CRM ולכלים הקיימים?",
+          "faq.a5": "כן — WhatsApp, Instagram, Facebook, Gmail, Calendar ומודלי השפה המובילים, עם העברה ל-CRM לפגישות מסוננות.",
+          "eyebrow.demo": "הדגמה",
+          "demo.title": "רואים את Felix Labs בפעולה — מבקשים הדגמה חיה מותאמת",
+          "footer.nl": "הצטרפות לניוזלטר",
+          "footer.signup": "הרשמה",
+          "footer.contact": "יצירת קשר ואודות",
+          "footer.contactLink": "יצירת קשר",
+          "footer.book": "קביעת הדגמה",
+          "footer.about": "עלינו",
+          "footer.reviews": "ביקורות",
+          "footer.team": "צוות",
+          "footer.tech": "טכני",
+          "footer.notes": "הערות גרסה",
+          "footer.status": "סטטוס שירות",
+          "footer.sitemap": "מפת אתר",
+          "footer.termsHead": "תנאים והגבלות",
+          "footer.terms": "תנאים והגבלות",
+          "footer.cookies": "מדיניות עוגיות",
+          "footer.privacy": "מדיניות פרטיות",
+          "footer.legal": "עיצוב ופיתוח: MMDesign",
+          "footer.aria": "כותרת תחתונה",
+          "lang.group": "שפה",
+          "lang.en": "אנגלית",
+          "lang.he": "עברית",
+          "close": "סגירה"
+        }
+      };
+      var LANG_META = {
+        en: { dir: "ltr" },
+        he: { dir: "rtl" }
+      };
+      var LANG_ORDER = ["en", "he"];
+      var LANG_KEY = "felix-lang";
+      var langSwitch = document.getElementById("lang-switcher");
+      var langBtns = langSwitch ? langSwitch.querySelectorAll("[data-lang]") : [];
+
+      function applyLang(lang) {
+        if (!I18N[lang]) lang = "en";
+        var dict = I18N[lang];
+        var meta = LANG_META[lang];
+        var root = document.documentElement;
+        root.lang = lang;
+        root.dir = meta.dir;
+        try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n");
+          if (dict[key] != null) el.textContent = dict[key];
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n-html");
+          if (dict[key] != null) el.innerHTML = dict[key];
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n-placeholder");
+          if (dict[key] != null) el.setAttribute("placeholder", dict[key]);
+        });
+        document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n-aria");
+          if (el === navToggle) {
+            var navOpen = header && header.classList.contains("is-nav-open");
+            el.setAttribute("aria-label", dict[navOpen ? "nav.close" : "nav.menu"]);
+            return;
+          }
+          if (dict[key] != null) el.setAttribute("aria-label", dict[key]);
+        });
+        if (langSwitch) {
+          langSwitch.setAttribute("data-lang", lang);
+          langBtns.forEach(function (btn) {
+            var on = btn.getAttribute("data-lang") === lang;
+            btn.setAttribute("aria-checked", on ? "true" : "false");
+            btn.tabIndex = on ? 0 : -1;
+          });
+        }
+      }
+
+      if (langSwitch) {
+        langSwitch.addEventListener("click", function (event) {
+          var opt = event.target.closest("[data-lang]");
+          if (!opt || !langSwitch.contains(opt)) return;
+          applyLang(opt.getAttribute("data-lang"));
+        });
+        langSwitch.addEventListener("keydown", function (event) {
+          var current = langSwitch.getAttribute("data-lang") || "en";
+          var idx = LANG_ORDER.indexOf(current);
+          var next = idx;
+          if (event.key === "ArrowRight" || event.key === "ArrowDown") next = Math.min(LANG_ORDER.length - 1, idx + 1);
+          else if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = Math.max(0, idx - 1);
+          else if (event.key === "Home") next = 0;
+          else if (event.key === "End") next = LANG_ORDER.length - 1;
+          else return;
+          event.preventDefault();
+          applyLang(LANG_ORDER[next]);
+          var focusBtn = langSwitch.querySelector('[data-lang="' + LANG_ORDER[next] + '"]');
+          if (focusBtn) focusBtn.focus();
+        });
+      }
+
+      var saved = "en";
+      try { saved = localStorage.getItem(LANG_KEY) || "en"; } catch (e) {}
+      applyLang(saved);
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (langSwitch) langSwitch.classList.add("is-ready");
+        });
+      });
+    })();
+
+    (function () {
+      var folds = document.querySelectorAll("details.fold");
+      if (!folds.length) return;
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var foldDur = 250;
+
+      requestAnimationFrame(function () {
+        folds.forEach(function (fold) { fold.classList.add("is-fold-ready"); });
+      });
+
+      if (reduceMotion) return;
+
+      folds.forEach(function (details) {
+        var summary = details.querySelector("summary");
+        var panel = details.querySelector(".fold-panel");
+        if (!summary || !panel) return;
+
+        summary.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (details.classList.contains("is-closing")) return;
+
+          if (details.open) {
+            details.classList.add("is-closing");
+            var ended = false;
+            var onEnd = function (ev) {
+              if (ev.propertyName !== "grid-template-rows" || ended) return;
+              ended = true;
+              panel.removeEventListener("transitionend", onEnd);
+              details.open = false;
+              details.classList.remove("is-closing");
+            };
+            panel.addEventListener("transitionend", onEnd);
+            window.setTimeout(function () {
+              if (!ended) {
+                ended = true;
+                panel.removeEventListener("transitionend", onEnd);
+                details.open = false;
+                details.classList.remove("is-closing");
+              }
+            }, foldDur + 80);
+          } else {
+            details.open = true;
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

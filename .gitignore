@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Local drafts / scratch
+.tmp/
+
+# Environment & secrets
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+
+# OS & editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs & cache
+*.log
+npm-debug.log*
+.cache/
+.turbo/
+.parcel-cache/

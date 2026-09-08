@@ -1,0 +1,15 @@
+<svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="44" y="28" width="192" height="124" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <rect x="58" y="44" width="72" height="14" rx="7" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <rect x="66" y="48" width="40" height="4" rx="2" fill="rgba(255,255,255,0.28)"/>
+  <rect x="58" y="66" width="164" height="44" rx="10" fill="rgba(104,131,217,0.14)" stroke="rgba(104,131,217,0.42)" stroke-width="1"/>
+  <rect x="68" y="76" width="108" height="4" rx="2" fill="rgba(255,255,255,0.35)"/>
+  <rect x="68" y="86" width="88" height="4" rx="2" fill="rgba(255,255,255,0.2)"/>
+  <rect x="68" y="96" width="64" height="4" rx="2" fill="rgba(255,255,255,0.14)"/>
+  <rect x="170" y="118" width="52" height="22" rx="11" fill="rgba(104,131,217,0.22)" stroke="rgba(104,131,217,0.5)" stroke-width="1"/>
+  <path d="M182 129h28M196 123v12" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" stroke-linecap="round"/>
+  <rect x="58" y="118" width="52" height="22" rx="11" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <path d="M72 129h24" stroke="rgba(255,255,255,0.45)" stroke-width="1" stroke-linecap="round"/>
+  <circle cx="214" cy="52" r="10" fill="rgba(74,255,190,0.12)" stroke="rgba(74,255,190,0.4)" stroke-width="1"/>
+  <path d="M210 52l3 3 6-6" stroke="rgba(74,255,190,0.85)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
