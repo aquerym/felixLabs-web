@@ -39,6 +39,12 @@
       --radius-card: 28px;
       --radius-pill: 60px;
       --ease: cubic-bezier(0.2, 0, 0, 1);
+      --ease-nav: cubic-bezier(0.32, 0.72, 0, 1);
+      --duration-nav: 520ms;
+      --duration-nav-out: 400ms;
+      --duration-nav-icon: 280ms;
+      --duration-header: 800ms;
+      --ease-header: cubic-bezier(0.77, 0, 0.175, 1);
       --focus: 2px solid #a4aaff;
     }
 
@@ -239,18 +245,16 @@
 
     /* Header — full width at top, grid-width pill when scrolled */
     .site-header {
-      position: relative; z-index: 100; flex-shrink: 0;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100; flex-shrink: 0;
       width: 100%; padding: var(--space-m) 0;
       background: transparent;
-      transition: padding 320ms var(--ease);
+      transition: padding var(--duration-header) var(--ease-header);
     }
     .site-header.is-scrolled {
-      position: fixed; top: 0; left: 0; right: 0;
       padding: max(var(--space-s), env(safe-area-inset-top)) 0 var(--space-s);
     }
     .site-header-pad {
       flex-shrink: 0; height: 0;
-      transition: height 320ms var(--ease);
     }
     .site-header-bar {
       display: flex; align-items: center; justify-content: space-between;
@@ -261,10 +265,10 @@
       background: transparent; box-shadow: none;
       backdrop-filter: none; -webkit-backdrop-filter: none;
       transition:
-        width 320ms var(--ease), padding 320ms var(--ease),
-        border-radius 320ms var(--ease), background 320ms var(--ease),
-        border-color 320ms var(--ease), box-shadow 320ms var(--ease),
-        backdrop-filter 320ms var(--ease);
+        width var(--duration-header) var(--ease-header), padding var(--duration-header) var(--ease-header),
+        border-radius var(--duration-header) var(--ease-header), background var(--duration-header) var(--ease-header),
+        border-color var(--duration-header) var(--ease-header), box-shadow var(--duration-header) var(--ease-header),
+        backdrop-filter var(--duration-header) var(--ease-header);
     }
     .site-header.is-scrolled .site-header-bar {
       position: relative;
@@ -289,13 +293,13 @@
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
     }
-    .site-header.is-scrolled .site-header-bar > *,
+    .site-header.is-scrolled .site-header-bar > :not(.main-nav),
     .site-header.is-scrolled .site-header-bar .main-nav > ul,
     .site-header.is-scrolled .site-header-bar .nav-extra {
       position: relative; z-index: 2;
     }
-    .logo { width: 176px; height: 33px; flex-shrink: 0; overflow: clip; transition: width 320ms var(--ease), height 320ms var(--ease); }
-    .logo img { width: 176px; height: 33px; transition: width 320ms var(--ease), height 320ms var(--ease); }
+    .logo { width: 176px; height: 33px; flex-shrink: 0; overflow: clip; transition: width var(--duration-header) var(--ease-header), height var(--duration-header) var(--ease-header); }
+    .logo img { width: 176px; height: 33px; transition: width var(--duration-header) var(--ease-header), height var(--duration-header) var(--ease-header); }
     .site-header.is-scrolled .logo { width: 140px; height: 26px; }
     .site-header.is-scrolled .logo img { width: 140px; height: 26px; }
     .main-nav > ul {
@@ -346,7 +350,7 @@
     .nav-toggle-bars::before,
     .nav-toggle-bars::after {
       content: ""; position: absolute; inset-inline-start: 0;
-      transition: transform 160ms var(--ease), top 160ms var(--ease);
+      transition: transform var(--duration-nav-icon) var(--ease-nav), top var(--duration-nav-icon) var(--ease-nav);
     }
     .nav-toggle-bars::before { top: -6px; }
     .nav-toggle-bars::after { top: 6px; }
@@ -509,6 +513,9 @@
     .hero-stage.is-inview .hero > *,
     .hero-stage.is-inview .hero-shot {
       opacity: 1;
+    }
+    .hero-stage.is-inview .hero > *,
+    .hero-stage.is-inview .hero-shot {
       transform: translateY(0) scale(1);
     }
     @media (prefers-reduced-motion: reduce) {
@@ -1729,11 +1736,18 @@
     }
 
     @media (max-width: 1100px) {
-      body.is-nav-open::before {
+      body::before {
         content: "";
         position: fixed; inset: 0; z-index: 50;
         background: rgba(1, 2, 4, 0.88);
-        pointer-events: auto;
+        opacity: 0; visibility: hidden; pointer-events: none;
+        transition:
+          opacity var(--duration-nav-out) var(--ease-nav),
+          visibility var(--duration-nav-out);
+      }
+      body.is-nav-open::before {
+        opacity: 1; visibility: visible; pointer-events: auto;
+        transition-duration: var(--duration-nav);
       }
       .site-header {
         padding: max(var(--space-s), env(safe-area-inset-top)) 0 var(--space-s);
@@ -1745,9 +1759,20 @@
         padding: 6px 10px 6px 12px;
       }
       .site-header.is-nav-open { border-bottom-color: transparent; }
+      .site-header.is-nav-open .site-header-bar,
+      .site-header.is-scrolled.is-nav-open .site-header-bar {
+        overflow: visible;
+        isolation: auto;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
       .site-header-bar { position: relative; z-index: 60; }
       .logo,
       .header-actions { position: relative; z-index: 2; }
+      .site-header.is-scrolled .site-header-bar > .main-nav {
+        position: fixed;
+        z-index: 1;
+      }
       .logo { width: 132px; height: 25px; }
       .logo img { width: 132px; height: 25px; }
       .header-actions { display: flex; }
@@ -1760,19 +1785,45 @@
         border-radius: 0 0 36px 36px;
         background: var(--color-canvas);
         overflow: hidden;
-        transform: translateY(-16px);
+        transform: translateY(-12px);
         opacity: 0; filter: blur(2px);
         visibility: hidden; pointer-events: none;
         transition:
-          transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
-          opacity 400ms cubic-bezier(0.22, 1, 0.36, 1),
-          filter 400ms cubic-bezier(0.22, 1, 0.36, 1),
-          visibility 400ms;
+          transform var(--duration-nav-out) var(--ease-nav),
+          opacity var(--duration-nav-out) var(--ease-nav),
+          filter var(--duration-nav-out) var(--ease-nav),
+          visibility var(--duration-nav-out);
       }
       .site-header.is-nav-open .main-nav {
         transform: translateY(0);
         opacity: 1; filter: blur(0);
         visibility: visible; pointer-events: auto;
+        transition-duration: var(--duration-nav);
+      }
+      .main-nav > ul li,
+      .nav-extra > * {
+        opacity: 0.35;
+        transform: translateY(8px);
+        transition:
+          opacity var(--duration-nav-out) var(--ease-nav),
+          transform var(--duration-nav-out) var(--ease-nav);
+      }
+      .main-nav > ul li:nth-child(1) { transition-delay: 0ms; }
+      .main-nav > ul li:nth-child(2) { transition-delay: 40ms; }
+      .main-nav > ul li:nth-child(3) { transition-delay: 80ms; }
+      .main-nav > ul li:nth-child(4) { transition-delay: 120ms; }
+      .nav-extra > *:nth-child(1) { transition-delay: 140ms; }
+      .nav-extra > *:nth-child(2) { transition-delay: 180ms; }
+      .nav-extra > *:nth-child(3) { transition-delay: 220ms; }
+      .site-header.is-nav-open .main-nav > ul li,
+      .site-header.is-nav-open .nav-extra > * {
+        opacity: 1;
+        transform: none;
+        transition-duration: var(--duration-nav);
+      }
+      .site-header:not(.is-nav-open) .main-nav > ul li,
+      .site-header:not(.is-nav-open) .nav-extra > * {
+        transition-delay: 0ms;
       }
       .hero-stage:has(.site-header.is-nav-open) { overflow: visible; }
       .nav-glows {
@@ -3310,11 +3361,14 @@
       var headerPad = document.querySelector(".site-header-pad");
       var navToggle = document.getElementById("nav-toggle");
       var navMq = window.matchMedia("(max-width: 1100px)");
+      var headerCompact = false;
       function updateHeaderScroll() {
         if (!header) return;
-        var scrolled = window.scrollY > 20;
-        header.classList.toggle("is-scrolled", scrolled);
-        if (headerPad) headerPad.style.height = scrolled ? header.offsetHeight + "px" : "0px";
+        var y = window.scrollY || document.documentElement.scrollTop || 0;
+        if (y >= 96) headerCompact = true;
+        else if (y <= 32) headerCompact = false;
+        header.classList.toggle("is-scrolled", headerCompact);
+        if (headerPad && !headerCompact) headerPad.style.height = header.offsetHeight + "px";
       }
       updateHeaderScroll();
       window.addEventListener("scroll", updateHeaderScroll, { passive: true });
